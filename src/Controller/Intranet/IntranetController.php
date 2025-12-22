@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Intranet;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class IndexController extends AbstractController
+final class IntranetController extends AbstractController
 {
-    #[Route('/', name: 'home')]
+    #[Route('/', name: 'intranet')]
     public function index(): Response
     {
-        return $this->render('index/index.html.twig', [
+        return $this->render('intranet/index.html.twig', [
             'controller_name' => 'IndexController',
         ]);
     }

@@ -1,0 +1,13 @@
+{% extends 'crm.html.twig' %}
+
+{% block title %}Hello CrmController!
+{% endblock %}
+
+{% block body %}
+	<script>
+		window.AppConfig = {
+			intranetUrl: "{{ path('intranet') }}"
+		};
+	</script>
+	<div id="root"></div>
+{% endblock %}

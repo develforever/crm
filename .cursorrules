@@ -1,0 +1,1 @@
+"Mam projekt Symfony 7 z dwoma buildami Encore (front i crm). CRM to React z basename /crm i catch-all route. Skonfigurowaliśmy framework.assets i webpack_encore.builds. Kontynuujmy..."

@@ -8,11 +8,11 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class IntranetController extends AbstractController
 {
-    #[Route('/', name: 'intranet')]
+    #[Route('/', name: 'index')]
     public function index(): Response
     {
-        return $this->render('intranet/index.html.twig', [
-            'controller_name' => 'IndexController',
+         return $this->forward('App\Controller\Intranet\CmsController::dispatch', [
+            'slug'  => 'index',
         ]);
     }
 }

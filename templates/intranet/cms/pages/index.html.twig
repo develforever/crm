@@ -1,0 +1,18 @@
+{% extends 'intranet.html.twig' %}
+
+{% block title %}Hello IndexController!
+{% endblock %}
+
+{% block body %}
+	<div data-controller="hello"></div>
+	<ul class="navbar-nav">
+    {% for item in cms_menu('main_menu') %}
+        <li class="nav-item">
+            <a class="nav-link" href="{{ item.url }}">{{ item.label }}</a>
+        </li>
+    {% else %}
+        <!-- Opcjonalnie: co wyświetlić, gdy menu jest puste -->
+        <li class="nav-item">Zdefiniuj menu 'main_header' w CRM</li>
+    {% endfor %}
+</ul>
+{% endblock %}

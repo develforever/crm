@@ -9,8 +9,20 @@ use App\Repository\CmsPageRepository;
 
 final class CmsController extends AbstractController
 {
-    #[Route('/{slug}', name: 'cms_dispatch', requirements: ['slug' => '.*'], priority: -10)]
-    public function dispatch(string $slug = 'home', CmsPageRepository $pageRepo): Response
+    #[Route(
+        '/{_locale}/{slug}',
+        name: 'cms_dispatch',
+        requirements: [
+            'slug' => '.*',
+            '_locale' => 'pl|en'
+        ],
+        defaults: [
+            '_locale' => 'en',
+            'slug' => 'index'
+        ],
+        priority: -10
+    )]
+    public function dispatch(string $_locale, string $slug, CmsPageRepository $pageRepo): Response
     {
         $page = $pageRepo->findOneBy(['slug' => $slug, 'isActive' => true]);
 

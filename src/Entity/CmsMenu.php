@@ -24,7 +24,7 @@ class CmsMenu
     /**
      * @var Collection<int, CmsMenuItem>
      */
-    #[ORM\OneToMany(targetEntity: CmsMenuItem::class, mappedBy: 'menu')]
+    #[ORM\OneToMany(targetEntity: CmsMenuItem::class, mappedBy: 'menu', cascade: ['persist', 'remove'])]
     private Collection $cmsMenuItems;
 
     public function __construct()

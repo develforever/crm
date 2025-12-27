@@ -69,7 +69,7 @@ class CmsExtension extends AbstractExtension
     public function renderWidget(string $name): string
     {
         $widget = $this->widgetRepository->findOneBy(['name' => $name]);
-        if (!$widget) return '_none_';
+        if (!$widget) return $this->parseDynamicContent('{{\'define_widget\'|trans}} \''.$name.'\'');
 
         $output = '';
         foreach ($widget->getCmsWidgetItems() as $item) {

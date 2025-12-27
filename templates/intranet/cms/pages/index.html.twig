@@ -17,7 +17,7 @@
 								<a class="nav-link" href="{{ item.url }}">{{ item.label }}</a>
 							</li>
 						{% else %}
-							<li class="nav-item">Zdefiniuj menu 'main_header' w CRM</li>
+							<li class="nav-item">{{ 'define_menu'|trans }} 'main_menu' {{'items'|trans}}</li>
 						{% endfor %}
 					</ul>
 				</div>

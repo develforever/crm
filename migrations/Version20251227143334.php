@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20251223142551 extends AbstractMigration
+final class Version20251227143334 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -23,28 +23,42 @@ final class Version20251223142551 extends AbstractMigration
         $this->addSql('CREATE TABLE cms_content (id SERIAL NOT NULL, type VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE cms_html (id INT NOT NULL, content TEXT NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE cms_image (id INT NOT NULL, path VARCHAR(255) NOT NULL, alt VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE cms_menu (id SERIAL NOT NULL, title VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE cms_menu_item (id SERIAL NOT NULL, menu_id INT DEFAULT NULL, label VARCHAR(255) NOT NULL, url VARCHAR(255) DEFAULT NULL, target VARCHAR(255) DEFAULT NULL, position INT NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE INDEX IDX_1432B53DCCD7E912 ON cms_menu_item (menu_id)');
+        $this->addSql('CREATE TABLE cms_page (id SERIAL NOT NULL, title VARCHAR(255) NOT NULL, slug VARCHAR(255) NOT NULL, content TEXT DEFAULT NULL, is_active BOOLEAN NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_D39C1B5D989D9B62 ON cms_page (slug)');
         $this->addSql('CREATE TABLE cms_text (id INT NOT NULL, plain_text TEXT NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE cms_widget (id SERIAL NOT NULL, name VARCHAR(255) NOT NULL, title VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE cms_widget_item (id SERIAL NOT NULL, widget_id INT DEFAULT NULL, content_id INT NOT NULL, position INT NOT NULL, type VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE INDEX IDX_1A0D9975FBE885E2 ON cms_widget_item (widget_id)');
+        $this->addSql('CREATE INDEX IDX_1A0D997584A0A3ED ON cms_widget_item (content_id)');
         $this->addSql('ALTER TABLE cms_html ADD CONSTRAINT FK_DFEF5598BF396750 FOREIGN KEY (id) REFERENCES cms_content (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE cms_image ADD CONSTRAINT FK_EB4E9F73BF396750 FOREIGN KEY (id) REFERENCES cms_content (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE cms_menu_item ADD CONSTRAINT FK_1432B53DCCD7E912 FOREIGN KEY (menu_id) REFERENCES cms_menu (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE cms_text ADD CONSTRAINT FK_FC1D0ABABF396750 FOREIGN KEY (id) REFERENCES cms_content (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE cms_widget_item ADD content_id INT NOT NULL');
+        $this->addSql('ALTER TABLE cms_widget_item ADD CONSTRAINT FK_1A0D9975FBE885E2 FOREIGN KEY (widget_id) REFERENCES cms_widget (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE cms_widget_item ADD CONSTRAINT FK_1A0D997584A0A3ED FOREIGN KEY (content_id) REFERENCES cms_content (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('CREATE INDEX IDX_1A0D997584A0A3ED ON cms_widget_item (content_id)');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE SCHEMA public');
-        $this->addSql('ALTER TABLE cms_widget_item DROP CONSTRAINT FK_1A0D997584A0A3ED');
         $this->addSql('ALTER TABLE cms_html DROP CONSTRAINT FK_DFEF5598BF396750');
         $this->addSql('ALTER TABLE cms_image DROP CONSTRAINT FK_EB4E9F73BF396750');
+        $this->addSql('ALTER TABLE cms_menu_item DROP CONSTRAINT FK_1432B53DCCD7E912');
         $this->addSql('ALTER TABLE cms_text DROP CONSTRAINT FK_FC1D0ABABF396750');
+        $this->addSql('ALTER TABLE cms_widget_item DROP CONSTRAINT FK_1A0D9975FBE885E2');
+        $this->addSql('ALTER TABLE cms_widget_item DROP CONSTRAINT FK_1A0D997584A0A3ED');
         $this->addSql('DROP TABLE cms_content');
         $this->addSql('DROP TABLE cms_html');
         $this->addSql('DROP TABLE cms_image');
+        $this->addSql('DROP TABLE cms_menu');
+        $this->addSql('DROP TABLE cms_menu_item');
+        $this->addSql('DROP TABLE cms_page');
         $this->addSql('DROP TABLE cms_text');
-        $this->addSql('DROP INDEX IDX_1A0D997584A0A3ED');
-        $this->addSql('ALTER TABLE cms_widget_item DROP content_id');
+        $this->addSql('DROP TABLE cms_widget');
+        $this->addSql('DROP TABLE cms_widget_item');
     }
 }

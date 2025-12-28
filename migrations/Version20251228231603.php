@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20251227181155 extends AbstractMigration
+final class Version20251228231603 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -26,8 +26,11 @@ final class Version20251227181155 extends AbstractMigration
         $this->addSql('CREATE TABLE cms_menu (id SERIAL NOT NULL, title VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE cms_menu_item (id SERIAL NOT NULL, menu_id INT DEFAULT NULL, label VARCHAR(255) NOT NULL, url VARCHAR(255) DEFAULT NULL, target VARCHAR(255) DEFAULT NULL, position INT NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_1432B53DCCD7E912 ON cms_menu_item (menu_id)');
-        $this->addSql('CREATE TABLE cms_page (id SERIAL NOT NULL, title VARCHAR(255) NOT NULL, slug VARCHAR(255) NOT NULL, content TEXT DEFAULT NULL, is_active BOOLEAN NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE cms_page (id SERIAL NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, deleted_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, title VARCHAR(255) NOT NULL, slug VARCHAR(255) NOT NULL, content TEXT DEFAULT NULL, is_active BOOLEAN NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_D39C1B5D989D9B62 ON cms_page (slug)');
+        $this->addSql('COMMENT ON COLUMN cms_page.created_at IS \'(DC2Type:datetime_immutable)\'');
+        $this->addSql('COMMENT ON COLUMN cms_page.updated_at IS \'(DC2Type:datetime_immutable)\'');
+        $this->addSql('COMMENT ON COLUMN cms_page.deleted_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE cms_page_translations (id SERIAL NOT NULL, object_id INT DEFAULT NULL, locale VARCHAR(8) NOT NULL, field VARCHAR(32) NOT NULL, content TEXT DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_C8EBF10A232D562B ON cms_page_translations (object_id)');
         $this->addSql('CREATE INDEX cms_page_translation_idx ON cms_page_translations (locale, object_id, field)');

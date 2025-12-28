@@ -11,8 +11,6 @@ final class CrmController extends AbstractController
     #[Route('/crm/{reactRouting}', name: 'crm_index', requirements: ['reactRouting' => '.*'])]
     public function index(): Response
     {
-        return $this->render('crm/index.html.twig', [
-            'controller_name' => 'CrmController',
-        ]);
+        return $this->render('crm/index.html.twig', []);
     }
 }

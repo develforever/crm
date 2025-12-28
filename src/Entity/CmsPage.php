@@ -8,31 +8,52 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\Collection;
 use Gedmo\Translatable\Translatable;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: CmsPageRepository::class)]
 #[Gedmo\TranslationEntity(class: CmsPageTranslation::class)]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 class CmsPage implements Translatable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['cms_read', 'cms_view'])]
     private ?int $id = null;
+
+    #[ORM\Column(type: 'datetime_immutable')]
+    #[Gedmo\Timestampable(on: 'create')]
+    #[Groups(['cms_read', 'cms_view'])]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column(type: 'datetime_immutable')]
+    #[Gedmo\Timestampable(on: 'update')]
+    #[Groups(['cms_read', 'cms_view'])]
+    private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    #[Groups(['cms_read', 'cms_view'])]
+    private ?\DateTimeImmutable $deletedAt = null;
 
     #[ORM\Column(length: 255)]
     #[Gedmo\Translatable]
+    #[Groups(['cms_read', 'cms_view'])]
     private ?string $title = null;
 
     #[Gedmo\Locale]
     private $locale;
 
     #[ORM\Column(length: 255, unique: true)]
+    #[Groups(['cms_view'])]
     private ?string $slug = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Gedmo\Translatable]
+    #[Groups(['cms_view'])]
     private ?string $content = null;
 
     #[ORM\Column]
+    #[Groups(['cms_read', 'cms_view'])]
     private ?bool $isActive = null;
 
     #[ORM\OneToMany(mappedBy: 'object', targetEntity: CmsPageTranslation::class, cascade: ['persist', 'remove'])]
@@ -113,9 +134,28 @@ class CmsPage implements Translatable
 
     public function addTranslation(CmsPageTranslation $t)
     {
-        if (!$this->translations->contains($t)) {            
+        if (!$this->translations->contains($t)) {
             $t->setObject($this);
             $this->translations[] = $t;
         }
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+    public function getDeletedAt(): ?\DateTimeImmutable
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeletedAt(?\DateTimeImmutable $deletedAt): self
+    {
+        $this->deletedAt = $deletedAt;
+        return $this;
     }
 }

@@ -8,6 +8,7 @@ use App\Entity\CmsText;
 use App\Entity\CmsWidgetItem;
 use App\Repository\CmsImageRepository;
 use App\Repository\CmsMenuRepository;
+use App\Repository\CmsPageRepository;
 use App\Repository\CmsWidgetRepository;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
@@ -19,6 +20,7 @@ class CmsExtension extends AbstractExtension
         private CmsMenuRepository $menuRepository,
         private CmsWidgetRepository $widgetRepository,
         private CmsImageRepository $imageRepository,
+        private CmsPageRepository $pageRepository,
         private Environment $twig,
     ) {}
 
@@ -29,6 +31,7 @@ class CmsExtension extends AbstractExtension
             new TwigFunction('cms_widget', [$this, 'renderWidget'], ['is_safe' => ['html']]),
             new TwigFunction('cms_image', [$this, 'getImage'], ['is_safe' => ['html']]),
             new TwigFunction('cms_page_content', [$this, 'getPageContent'], ['is_safe' => ['html'], 'needs_context' => true,]),
+            new TwigFunction('cms_page_link', [$this, 'getPageLink'], ['is_safe' => ['html']]),
 
         ];
     }
@@ -57,6 +60,18 @@ class CmsExtension extends AbstractExtension
         return sprintf('<img src="%s" alt="%s">', $image->getPath(), $image->getAlt());
     }
 
+    public function getPageLink(int $pageId, string $label = null): string
+    {
+        $out = '';
+
+        $page = $this->pageRepository->findOneBy(['id' => $pageId]);
+        if ($page) {
+            $out =  $this->parseDynamicContent('<a href="{{ path(\'cms_page\', {\'slug\': \''.$page->getSlug().'\'}) }}" >' . ($label ?? $page->getTitle()) . '</a>');
+        }
+
+        return $out;
+    }
+
 
     public function getPageContent(array $context, string $content): string
     {
@@ -69,7 +84,7 @@ class CmsExtension extends AbstractExtension
     public function renderWidget(string $name): string
     {
         $widget = $this->widgetRepository->findOneBy(['name' => $name]);
-        if (!$widget) return $this->parseDynamicContent('{{\'define_widget\'|trans}} \''.$name.'\'');
+        if (!$widget) return $this->parseDynamicContent('{{\'define_widget\'|trans}} \'' . $name . '\'');
 
         $output = '';
         foreach ($widget->getCmsWidgetItems() as $item) {

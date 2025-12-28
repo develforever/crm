@@ -11,7 +11,7 @@ final class CmsController extends AbstractController
 {
     #[Route(
         '/{_locale}/{slug}',
-        name: 'cms_dispatch',
+        name: 'cms_page',
         requirements: [
             'slug' => '.*',
             '_locale' => 'pl|en'

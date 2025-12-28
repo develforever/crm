@@ -1,9 +1,16 @@
-<!DOCTYPE html>
+{% extends 'intranet.html.twig' %}
 
-<title>Hello CmsController!</title>
+{% block title %}{{page.title}}
+{% endblock %}
+
+{% block header %}
+		{{ include('intranet/cms/pages/_menu.html.twig') }}
+{% endblock %}
 
 {% block body %}
-<pre>
 {{ dump(page) }}
-</pre>
+{% endblock %}
+
+{% block side  %}
+{{ cms_widget('side') }}
 {% endblock %}

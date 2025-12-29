@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client';
 import { NavLink } from 'react-router-dom';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import CMS from './modules/cms/module';
-import Menu from './components/Menu';
+import { Menu } from './components/Menu';
 
 const Dashboard = () => {
 
@@ -14,7 +14,7 @@ const Dashboard = () => {
 
             <div className='d-flex'>
                 <div className='border'>
-                     <NavLink to="cms" className="link">CMS</NavLink>
+                    <NavLink to="cms" className="link">CMS</NavLink>
                 </div>
             </div>
         </div>
@@ -32,7 +32,7 @@ const Klienci = () => {
 const App = () => {
     return (
         <BrowserRouter basename="/crm">
-            <Menu></Menu>
+            <Menu intranetUrl={window.AppConfig?.intranetUrl}></Menu>
 
             <Routes>
                 <Route name="crm" path="/" element={<Dashboard />} />

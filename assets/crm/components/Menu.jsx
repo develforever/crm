@@ -1,7 +1,10 @@
 import { NavLink } from "react-router-dom";
 
 
-export default function Menu() {
+export const Menu = ({
+    intranetUrl = "/en",
+    ...props
+}) => {
 
     return (<nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid">
@@ -9,7 +12,7 @@ export default function Menu() {
             <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav">
                     <li className="nav-item">
-                        <a className="nav-link" href={window.AppConfig.intranetUrl}>Intranet</a>
+                        <a className="nav-link" href={intranetUrl}>Intranet</a>
                     </li>
                     <li className="nav-item">
                         <NavLink to="/" className="nav-link">Home</NavLink>

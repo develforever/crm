@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 
 export const useApiService = (url, options) => {
     const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(url ? true : false);
     const [error, setError] = useState(null);
 
     const fetchData = async (url, options) => {
@@ -36,7 +36,9 @@ export const useApiService = (url, options) => {
     };
 
     useEffect(() => {
-        if (url) fetchData(url, options);
+        if (url) {
+            fetchData(url, options);
+        }
     }, [url]);
 
     return { data, loading, error, refetch: fetchData };

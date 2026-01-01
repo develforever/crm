@@ -1,17 +1,25 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useApiService } from "../../../../hook/data";
-import { HtmlEditor } from "../../HtmlEditor";
+import { useState } from "react";
 
 const CmsPage = () => {
 
     const { id } = useParams();
     const navigate = useNavigate();
 
+    const [formData, setFormData] = useState({
+        id: -1,
+        title: '',
+        slug: '',
+        isActive: false,
+        locale: 'en',
+        htmlContnet: ''
+    });
     const { data, loading, error, refetch } = useApiService(`/cms/pages/page/${id}`);
 
     const onSave = async (htmlContnet) => {
 
-        await refetch(`/cms/pages/page/${id}`, { method: 'PUT', body: JSON.stringify({ htmlContnet }) });
+        await refetch(`/cms/pages/page/${id}`, { method: 'PATCH', body: JSON.stringify({ ...formData, htmlContnet }) });
     }
 
     if (loading) return <div>Ładowanie danych...</div>;
@@ -25,10 +33,11 @@ const CmsPage = () => {
         <label>Slug: {data.slug}</label><br />
         <label>Active: {data.isActive ? 'Y' : 'N'}</label><br />
 
-        <HtmlEditor initialContent={data.content} onSave={onSave}></HtmlEditor>
+        <div>
+            HTML: {data.content}
+        </div>
 
-        <p>Utworzono: {new Date(data.createdAt).toLocaleString()}</p>
-        <p>Ostatnia zmiana: {new Date(data.updatedAt).toLocaleString()}</p>
+        <p>Utworzono: {new Date(data.createdAt).toLocaleString()}; Ostatnia zmiana: {new Date(data.updatedAt).toLocaleString()}</p>
 
     </div>);
 }

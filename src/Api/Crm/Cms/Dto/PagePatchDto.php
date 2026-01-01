@@ -4,9 +4,9 @@ namespace App\Api\Crm\Cms\Dto;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class PagePutDto
+class PagePatchDto
 {
-     #[Assert\Type('string')]
+    #[Assert\Type('string')]
     public string $htmlContnet;
 
     #[Assert\Type('string')]

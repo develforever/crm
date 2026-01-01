@@ -12,12 +12,14 @@ const App = () => {
     return (
         <BrowserRouter basename="/crm">
             <div className='container'>
-            <Menu intranetUrl={window.AppConfig?.intranetUrl}></Menu>
+                
+                
+                <Menu intranetUrl={window.AppConfig?.intranetUrl}></Menu>
 
-            <Routes>
-                <Route name="crm" path="/" element={<Dashboard />} />
-                <Route name="cms" path="/cms/*" element={<CMS />} />
-            </Routes>
+                <Routes>
+                    <Route name="crm" path="/" element={<Dashboard />} />
+                    <Route name="cms" path="/cms/*" element={<CMS />} />
+                </Routes>
             </div>
         </BrowserRouter>
     );

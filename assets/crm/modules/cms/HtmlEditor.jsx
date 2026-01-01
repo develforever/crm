@@ -23,7 +23,7 @@ const HtmlEditor = ({ initialContent, onSave }) => {
 
     return (
         <div style={{ padding: '20px', border: '1px solid #ccc' }}>
-            <h3>Edytor treści</h3>
+            <h5>Edytor treści</h5>
 
             <div
                 ref={contentRef}

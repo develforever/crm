@@ -1,80 +1,118 @@
-# Copilot / AI agent instructions — crm (concise)
+# Copilot / AI agent instructions — crm
 
 Purpose
-- Short, actionable notes to help an AI agent be productive in this repo (architecture, commands, patterns, key files).
+- Short, actionable instructions for AI coding agents working in this repository.
+- This file defines architectural rules, workflows, and guardrails AI must follow.
 
-High-level architecture
-- Symfony 7.4 PHP app (backend) + React frontend assets managed by Webpack Encore.
-- Backend structure: controllers in `src/Controller/*`, APIs in `src/Controller/Crm/Api/*` and DTOs under `src/Api/Crm/*`.
-- Domain model: Doctrine entities in `src/Entity/*` with repositories in `src/Repository/*`.
-- Frontend: two app bundles under `assets/crm/` and `assets/front/` (React lives under `assets/crm/modules`).
-- Templates: twig templates in `templates/`; CRM single-page React app mounts in `templates/crm/index.html.twig` at `<div id="root"></div>`.
+---
 
-Key developer workflows (commands)
-- Install PHP deps: `composer install`.
-- Install Node deps: `npm ci` (or `npm install`).
-- Run JS dev server (hot reload): `npm run dev` or `npm run dev-server` for encore dev-server.
-- Watch assets: `npm run watch`.
-- Build production assets: `npm run build`.
-- Storybook: `npm run storybook`, build Storybook with `npm run build-storybook`.
-- Run tests: `./bin/phpunit`.
-- Run Symfony console: `./bin/console` (migrations, fixtures, etc.).
-- DB via Docker Compose: `docker compose up -d` (see `compose.yaml` + `compose.override.yaml` for local ports). Useful commands: `docker compose up -d database`.
-- Migrations: `./bin/console doctrine:migrations:diff` then `./bin/console doctrine:migrations:migrate`.
-- Load fixtures: `./bin/console doctrine:fixtures:load -n` (see `src/DataFixtures/AppFixtures.php`).
+## High-level architecture
+- Backend: Symfony 7.4 (PHP 8.2+)
+- Frontend: React (Webpack Encore)
+- API-first architecture
 
-Project-specific conventions & patterns
-- Routing via PHP attributes (e.g., `#[Route('/crm/{reactRouting}', ...)]` in `src/Controller/Crm/*`).
-- API responses use a Data wrapper: `App\Api\Crm\Data` (returned via `$this->json(...)`), and serializer groups (example: `cms_read`, `cms_view` in `src/Entity/CmsPage.php`).
-- DTO and validation via attributes: `#[MapRequestPayload()]` and `#[Assert]` on DTOs (e.g., `src/Api/Crm/Cms/Dto/PagePutDto.php`).
-- Entity features: Gedmo extensions are in use (translations `Gedmo\Translatable`, soft-deletes `Gedmo\SoftDeleteable`) — check entities like `CmsPage` and translation classes.
-- Frontend routing: React Router is used inside `assets/crm/modules/*` (example: `assets/crm/modules/cms/Cms.jsx` mounts routes). Keep URLs and Symfony routes in sync.
-- Templates + frontend: Twig provides global `window.AppConfig` values and an element to mount React (`templates/crm/index.html.twig`).
+### Backend structure
+- Controllers: `src/Controller/*`
+- CRM API controllers: `src/Controller/Crm/Api/*`
+- DTOs & API layer: `src/Api/Crm/*`
+- Domain model: Doctrine entities in `src/Entity/*`
+- Repositories: `src/Repository/*`
 
-Integration points / external dependencies to watch
-- Symfony UX / Stimulus bridge: `@symfony/stimulus-bridge` used in assets; see `assets/front/stimulus_bootstrap.js` and `config/packages/ux_turbo.yaml`.
-- Webpack Encore outputs to `public/build/` per configuration in `webpack.config.js`.
-- Database and mail are often run via Docker (`compose.yaml`).
-- Storybook uses MSW (mock service worker) for stories; see `msw` and `msw-storybook-addon` in `package.json`.
+### Frontend structure
+- CRM SPA: `assets/crm/`
+- Public frontend: `assets/front/`
+- React modules live in `assets/crm/modules/**`
+- SPA mount point: `templates/crm/index.html.twig` (`<div id="root"></div>`)
 
-Testing & debugging notes
-- Tests bootstrap loads env from `.env` / `.env.test` (`tests/bootstrap.php`).
-- Use `APP_DEBUG=1` and Symfony web profiler (dev environment) for request inspection (routes, logs, queries).
-- Logs and cache: `var/log/` and `var/cache/` respectively; clear cache with `./bin/console cache:clear`.
+---
 
-Where to look for common tasks (quick map)
-- API examples: `src/Controller/Crm/Api/*` and `src/Api/Crm/*` (DTOs, Data wrapper).
-- Frontend components & routes: `assets/crm/modules/**` and `assets/front/**`.
-- Twig and mount point: `templates/crm/index.html.twig` and `templates/crm.html.twig`.
-- Fixtures: `src/DataFixtures/AppFixtures.php`.
-- Doctrine entities: `src/Entity/` (search for `#[Gedmo` for translation/soft-delete patterns).
-- Migrations: `migrations/`.
+## Backend rules (IMPORTANT)
+- Controllers must stay thin.
+- Business logic belongs in services.
+- Do NOT return Doctrine entities directly in API responses.
+- Use DTOs + serializer groups for all API responses.
+- Do NOT change existing API routes, HTTP methods, or response shapes unless explicitly asked.
+- Routing is defined via PHP attributes.
 
-Style & code expectations
-- PHP: modern (PHP 8.2), attributes, PSR-12-like idioms; use typed properties & return types.
-- JS: React 19+, use React Router for SPA, Storybook for component development; keep components under `assets/*`.
+---
 
-Examples to copy/paste
-- Serve dev (backend + db + assets):
-  1. `docker compose up -d` (postgres/mail)
-  2. `composer install && npm ci`
-  3. `./bin/console doctrine:migrations:migrate -n`
-  4. `npm run dev` (or `npm run watch`) and `symfony server:start` (or `php -S` if you prefer)
-- Add API: use attribute routes + DTOs + `$this->json($data, 200, [], ['groups'=>'cms_read'])`.
+## Frontend rules (IMPORTANT)
+- Use functional React components.
+- Use React Router inside `assets/crm/modules/*`.
+- Keep frontend routes in sync with Symfony routes.
+- Avoid overengineering:
+  - no unnecessary hooks
+  - no reducers unless clearly justified
+  - no premature abstractions
+- Validation logic should live outside JSX when possible.
 
-If anything is missing or unclear, tell me which area (backend, frontend, build, or tests) to expand with more concrete examples or commands. Please review and mark any sections you want me to expand or alter.
-
-## AI guardrails (important)
-- Do NOT change existing API routes or response shapes unless explicitly asked.
-- Do NOT introduce new frontend frameworks or build tools.
-- Do NOT refactor across backend/frontend boundaries without confirmation.
-- Ask before large or cross-module refactors.
-- Do not add additional dependencies without approval.
+---
 
 ## Design philosophy
-- Prefer simple, readable solutions over abstractions.
-- Avoid overengineering (extra layers, reducers, patterns) unless justified.
+- Prefer simple, readable solutions over clever abstractions.
+- Maintain existing behavior unless explicitly asked to change it.
+- Small, localized refactors are preferred over large rewrites.
 
-## Testing
-- When refactoring, keep existing test behavior unchanged.
-- Add tests only when explicitly requested or when necessary to ensure correctness.
+---
+
+## AI guardrails (STRICT)
+- Do NOT introduce new frameworks, build tools, or architectural patterns.
+- Do NOT refactor across backend/frontend boundaries without confirmation.
+- Do NOT modify unrelated files.
+- Ask before large or cross-module refactors.
+- If uncertain, ask clarifying questions before making changes.
+
+---
+
+## Tooling & workflows
+- PHP deps: `composer install`
+- JS deps: `npm ci`
+- Dev assets: `npm run dev` or `npm run dev-server`
+- Watch assets: `npm run watch`
+- Prod build: `npm run build`
+- Storybook: `npm run storybook`, `npm run build-storybook`
+- Tests: `./bin/phpunit`
+- Console: `./bin/console`
+
+---
+
+## Infrastructure
+- Docker Compose: `compose.yaml` + `compose.override.yaml`
+- Common: `docker compose up -d`
+- Database only: `docker compose up -d database`
+- Migrations:
+  - `./bin/console doctrine:migrations:diff`
+  - `./bin/console doctrine:migrations:migrate`
+- Fixtures: `./bin/console doctrine:fixtures:load -n`
+
+---
+
+## Framework & integrations
+- Gedmo extensions in use:
+  - Translatable
+  - SoftDeleteable
+- Symfony UX / Stimulus Bridge:
+  - `assets/front/stimulus_bootstrap.js`
+  - `config/packages/ux_turbo.yaml`
+- Webpack Encore output: `public/build/`
+- Storybook uses MSW (`msw`, `msw-storybook-addon`)
+
+---
+
+## Testing & debugging
+- Test bootstrap: `tests/bootstrap.php`
+- Env: `.env`, `.env.test`
+- Logs: `var/log/`
+- Cache: `var/cache/`
+- Clear cache: `./bin/console cache:clear`
+
+---
+
+## Quick map
+- API controllers: `src/Controller/Crm/Api/*`
+- DTOs & API data: `src/Api/Crm/*`
+- React modules: `assets/crm/modules/**`
+- Twig mount: `templates/crm/index.html.twig`
+- Fixtures: `src/DataFixtures/AppFixtures.php`
+- Entities: `src/Entity/*`
+- Migrations: `migrations/`

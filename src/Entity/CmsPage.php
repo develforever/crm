@@ -44,7 +44,7 @@ class CmsPage implements Translatable
     private $locale;
 
     #[ORM\Column(length: 255, unique: true)]
-    #[Groups(['cms_view'])]
+    #[Groups(['cms_read', 'cms_view'])]
     private ?string $slug = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

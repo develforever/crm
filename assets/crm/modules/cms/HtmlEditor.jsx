@@ -48,4 +48,4 @@ const HtmlEditor = ({ initialContent, onSave }) => {
     );
 };
 
-export default HtmlEditor;
+export { HtmlEditor };

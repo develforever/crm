@@ -1,10 +1,13 @@
-import { NavLink } from "react-router-dom";
-
+import { NavLink, useLocation } from "react-router-dom";
+import './Menu.scss';
 
 export const Menu = ({
     intranetUrl = "/en",
     ...props
 }) => {
+
+    const location = useLocation();
+    const isActive = (path) => location.pathname === path;
 
     return (<nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid">
@@ -15,13 +18,10 @@ export const Menu = ({
                         <a className="nav-link" href={intranetUrl}>Intranet</a>
                     </li>
                     <li className="nav-item">
-                        <NavLink to="/" className="nav-link">Home</NavLink>
+                        <NavLink to="/" className={`nav-link ${isActive('/') ? 'active' : ''}`}>Home</NavLink>
                     </li>
                     <li className="nav-item">
-                        <NavLink to="cms" className="nav-link">CMS</NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink to="clients" className="nav-link">Clients</NavLink>
+                        <NavLink to="cms" className={`nav-link ${isActive('/cms') ? 'active' : ''}`}>CMS</NavLink>
                     </li>
                 </ul>
             </div>

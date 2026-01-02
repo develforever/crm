@@ -61,6 +61,9 @@ Purpose
 - Do NOT modify unrelated files.
 - Ask before large or cross-module refactors.
 - If uncertain, ask clarifying questions before making changes.
+- Always prioritize maintainability and clarity.
+- Follow existing coding styles and conventions.
+- Do not modify files, always preserve the original content unless explicitly instructed to change them.
 
 ---
 

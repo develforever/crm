@@ -64,6 +64,7 @@ Purpose
 - Always prioritize maintainability and clarity.
 - Follow existing coding styles and conventions.
 - Do not modify files, always preserve the original content unless explicitly instructed to change them.
+- Do not propose commits if not explicitly instructed.
 
 ---
 

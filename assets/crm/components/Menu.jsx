@@ -7,7 +7,6 @@ export const Menu = ({
         { label: 'Home', to: '/' },
         { label: 'CMS', to: '/cms' },
     ],
-    activePath = undefined,
     ...props
 }) => {
 
@@ -21,7 +20,7 @@ export const Menu = ({
                     </li>
                     {items.map(item => (
                         <li className="nav-item" key={`${item.to}-${item.label}`}>
-                            <NavLink to={item.to} className="nav-link">{item.label}</NavLink>
+                            <NavLink to={item.to} className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}  >{item.label}</NavLink>
                         </li>
                     ))}
                 </ul>

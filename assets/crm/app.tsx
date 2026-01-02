@@ -14,7 +14,7 @@ const App = () => {
             <div className='container'>
 
 
-                <Menu intranetUrl={window.AppConfig?.intranetUrl} activePath="/cms"></Menu>
+                <Menu intranetUrl={window.AppConfig?.intranetUrl} ></Menu>
 
                 <Routes>
                     <Route name="crm" path="/" element={<Dashboard />} />

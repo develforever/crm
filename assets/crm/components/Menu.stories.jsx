@@ -5,11 +5,13 @@ import { Menu } from './Menu';
 export default {
   title: 'CRM/Menu',
   component: Menu,
-  decorators: [Story => <MemoryRouter initialEntries={["/"]}><Story /></MemoryRouter>],
+  decorators: [(Story, context) => {
+    const initialEntries = context.parameters?.routerInitialEntries ?? ['/'];
+    return <MemoryRouter initialEntries={initialEntries}><Story /></MemoryRouter>;
+  }],
   tags: ['autodocs'],
   argTypes: {
     intranetUrl: { control: 'text' },
-    activePath: { control: 'text' },
   },
   args: {
     intranetUrl: '/en',
@@ -23,7 +25,8 @@ export default {
 export const Default = {};
 
 export const ActiveCms = {
-  args: { activePath: '/cms' },
+  args: {  },
+  parameters: { routerInitialEntries: ['/cms'] },
 };
 
 export const CustomItems = {
@@ -32,6 +35,6 @@ export const CustomItems = {
       { label: 'Overview', to: '/' },
       { label: 'Users', to: '/users' },
     ],
-    activePath: '/users',
+
   },
 };

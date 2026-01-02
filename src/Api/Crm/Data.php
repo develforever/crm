@@ -11,6 +11,7 @@ class Data implements IData, JsonSerializable
         'error' => null,
         'data' => null,
         'meta' => null,
+        'message' => null,
     ];
 
     public function __set(string $name, $value)

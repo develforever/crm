@@ -2,6 +2,19 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useApiService } from "../../../../hook/data";
 import { useState } from "react";
 
+
+export interface CmsPage {
+    content: string;
+    locale: string;
+    createdAt: string;
+    deletedAt: string | null;
+    id: number;
+    isActive: boolean;
+    slug: string;
+    title: string;
+    updatedAt: string;
+}
+
 const CmsPage = () => {
 
     const { id } = useParams();
@@ -15,15 +28,16 @@ const CmsPage = () => {
         locale: 'en',
         htmlContnet: ''
     });
-    const { data, loading, error, refetch } = useApiService(`/cms/pages/page/${id}`);
+    const { data, loading, error, refetch } = useApiService<CmsPage>(`/cms/pages/page/${id}`);
 
-    const onSave = async (htmlContnet) => {
+    const onSave = async (htmlContnet: string) => {
 
         await refetch(`/cms/pages/page/${id}`, { method: 'PATCH', body: JSON.stringify({ ...formData, htmlContnet }) });
     }
 
     if (loading) return <div>Ładowanie danych...</div>;
     if (error) return <div>Wystąpił błąd: {error}</div>;
+    if (!data) return <div>Brak danych</div>;
 
     return (<div>
 

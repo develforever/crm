@@ -12,6 +12,7 @@
         "skipLibCheck": true
     },
     "include": [
-        "assets/**/*"
+        "assets/**/*",
+        "tests/**/*"
     ]
 }

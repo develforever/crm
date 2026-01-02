@@ -22,7 +22,7 @@ const CMS = () => {
         </nav>
 
         <Routes>
-            <Route name="cms_pages" path="/pages/*" element={<CmsPages />} />
+            <Route path="/pages/*" element={<CmsPages />} />
         </Routes>
     </div>);
 }

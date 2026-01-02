@@ -12,9 +12,9 @@ const App = () => {
     return (
         <BrowserRouter basename="/crm">
             <div className='container'>
-                
-                
-                <Menu intranetUrl={window.AppConfig?.intranetUrl}></Menu>
+
+
+                <Menu intranetUrl={window.AppConfig?.intranetUrl} activePath="/cms"></Menu>
 
                 <Routes>
                     <Route name="crm" path="/" element={<Dashboard />} />

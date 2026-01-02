@@ -3,11 +3,13 @@ import './Menu.scss';
 
 export const Menu = ({
     intranetUrl = "/en",
+    items = [
+        { label: 'Home', to: '/' },
+        { label: 'CMS', to: '/cms' },
+    ],
+    activePath = undefined,
     ...props
 }) => {
-
-    const location = useLocation();
-    const isActive = (path) => location.pathname === path;
 
     return (<nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid">
@@ -17,12 +19,11 @@ export const Menu = ({
                     <li className="nav-item">
                         <a className="nav-link" href={intranetUrl}>Intranet</a>
                     </li>
-                    <li className="nav-item">
-                        <NavLink to="/" className={`nav-link ${isActive('/') ? 'active' : ''}`}>Home</NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink to="cms" className={`nav-link ${isActive('/cms') ? 'active' : ''}`}>CMS</NavLink>
-                    </li>
+                    {items.map(item => (
+                        <li className="nav-item" key={`${item.to}-${item.label}`}>
+                            <NavLink to={item.to} className="nav-link">{item.label}</NavLink>
+                        </li>
+                    ))}
                 </ul>
             </div>
         </div>

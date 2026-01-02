@@ -84,6 +84,7 @@ Purpose
   - `./bin/console doctrine:migrations:diff`
   - `./bin/console doctrine:migrations:migrate`
 - Fixtures: `./bin/console doctrine:fixtures:load -n`
+- Storybook CRM module stories: `assets/crm/**/stories*.jsx`
 
 ---
 

@@ -1,23 +1,19 @@
 
-import { setupServer } from 'msw/node'
+import { setupServer } from 'msw/node';
+import { http, HttpResponse } from 'msw'
 
+export const handlers = [
+  
+]
 
-const server = setupServer()
+const server = setupServer(...handlers);
 
-beforeAll(() => {
-    // Start the interception.
-    server.listen()
-})
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
-afterEach(() => {
-    // Remove any handlers you may have added
-    // in individual tests (runtime handlers).
-    server.resetHandlers()
-})
+// server.events.on('request:start', ({ request }) => {
+//   console.log('Outgoing:', request.method, request.url)
+// })
 
-afterAll(() => {
-    // Disable request interception and clean up.
-    server.close()
-})
-
-export { server }
+export { server };

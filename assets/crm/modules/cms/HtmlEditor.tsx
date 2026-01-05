@@ -1,12 +1,20 @@
 import React, { useState, useRef } from 'react';
-import { useApiService } from '../../hook/data';
 
-const HtmlEditor = ({ initialContent, onSave }) => {
+
+interface HtmlEditorProps {
+    initialContent?: string;
+    onSave?: (content: string) => void;
+}
+
+const HtmlEditor = ({
+    initialContent = '',
+    onSave = (content: string) => { },
+}: HtmlEditorProps) => {
     const [content, setContent] = useState(initialContent);
-    const contentRef = useRef(null);
+    const contentRef = useRef<HTMLDivElement>(null);
 
     const handleInput = () => {
-        setContent(contentRef.current.innerHTML);
+        setContent(contentRef.current?.innerHTML || '');
     };
 
     const handleSave = async () => {
@@ -18,7 +26,7 @@ const HtmlEditor = ({ initialContent, onSave }) => {
     };
 
     const handleUndo = () => {
-        document.execCommand('undo', false, null);
+        document.execCommand('undo', false, undefined);
     };
 
     return (

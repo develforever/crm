@@ -19,6 +19,7 @@ Encore
     .setPublicPath('/build/front')
     .addEntry('front-app', './assets/front/app.js')
     .enableSassLoader()
+    .enablePostCssLoader()
     .disableSingleRuntimeChunk()
     .enableSingleRuntimeChunk()
     .addAliases({
@@ -30,6 +31,9 @@ Encore
 
 const frontConfig = Encore.getWebpackConfig();
 frontConfig.name = 'front';
+frontConfig.watchOptions = {
+    ignored: /node_modules|public/,
+};
 
 Encore.reset();
 
@@ -49,6 +53,7 @@ Encore
     .enableReactPreset()
     .enableTypeScriptLoader()
     .enableSassLoader()
+    .enablePostCssLoader()
     .enableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()
     .enableSourceMaps(!Encore.isProduction())
@@ -56,5 +61,8 @@ Encore
 
 const crmConfig = Encore.getWebpackConfig();
 crmConfig.name = 'crm';
+crmConfig.watchOptions = {
+    ignored: /node_modules|public/,
+};
 
 module.exports = [frontConfig, crmConfig];

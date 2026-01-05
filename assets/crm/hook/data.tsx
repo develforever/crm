@@ -12,9 +12,9 @@ interface ApiResponse<T = any> {
 
 const ApiResponseBaseSchema = z.object({
     data: z.any().optional().nullable(),
-    error: z.string().nullable().optional(),
-    message: z.string().optional(),
-    meta: z.any().optional(),
+    error: z.string().nullable().optional().nullable(),
+    message: z.string().optional().nullable(),
+    meta: z.any().optional().nullable(),
 });
 
 async function fetchJson<T>(
@@ -38,7 +38,7 @@ async function fetchJson<T>(
     return json as ApiResponse<T>;
 }
 
-export const useApiService = <T = any>(url: string, options?: RequestInit) => {
+export const useApiService = <T = any>(url?: string, options?: RequestInit) => {
     const [data, setData] = useState<T | null>(null);
     const [loading, setLoading] = useState(!!url);
     const [error, setError] = useState<string | null>(null);

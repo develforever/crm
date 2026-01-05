@@ -1,4 +1,6 @@
+import './styles/tailwind.css';
 import './styles/app.scss';
+
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Menu } from './components/Menu';
@@ -10,7 +12,6 @@ const App = () => {
     return (
         <BrowserRouter basename="/crm">
             <div className='container'>
-
 
                 <Menu intranetUrl={window.AppConfig?.intranetUrl} ></Menu>
 

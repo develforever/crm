@@ -2,8 +2,6 @@ import { NavLink } from "react-router-dom";
 import { Route, Routes } from "react-router-dom";
 import { CmsPages } from "./pages/CmsPages";
 
-
-
 const CMS = () => {
     return (<div>
         <h2>CMS</h2>

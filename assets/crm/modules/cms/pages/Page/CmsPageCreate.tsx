@@ -3,11 +3,29 @@ import { useApiService } from "../../../../hook/data";
 import { HtmlEditor } from "../../HtmlEditor";
 import { useState } from "react";
 
+interface FormData {
+    id: number;
+    title: string;
+    slug: string;
+    isActive: boolean;
+    locale: string;
+    htmlContnet: string;
+}
+
+interface ChangeEvent {
+    target: {
+        name: string;
+        value: string;
+        type: string;
+        checked: boolean;
+    };
+}
+
 const CmsPageCreate = () => {
 
     const navigate = useNavigate();
 
-    const [ formData, setFormData ] = useState({
+    const [formData, setFormData] = useState<FormData>({
         id: -1,
         title: '',
         slug: '',
@@ -17,12 +35,14 @@ const CmsPageCreate = () => {
     });
     const { data, loading, error, refetch } = useApiService();
 
-    const onSave = async (htmlContnet) => {
+    const onSave = async (htmlContnet: string) => {
 
         await refetch(`/cms/pages/page`, { method: 'PUT', body: JSON.stringify({ ...formData, htmlContnet }) });
     }
 
-    const handleChange = (e) => {
+
+
+    const handleChange = (e: ChangeEvent) => {
         const { name, value, type, checked } = e.target;
         setFormData({
             ...formData,

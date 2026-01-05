@@ -43,7 +43,10 @@ export const useApiService = <T = any>(url?: string, options?: RequestInit) => {
     const [loading, setLoading] = useState(!!url);
     const [error, setError] = useState<string | null>(null);
 
-    const fetchData = async (url: string, options?: RequestInit): Promise<ApiResponse<T>> => {
+    const fetchData = async (url?: string, options?: RequestInit): Promise<ApiResponse<T>> => {
+        
+        if (!url) return { data: null, error: 'No URL provided' };
+
         setLoading(true);
 
         if (!options) {
@@ -76,5 +79,7 @@ export const useApiService = <T = any>(url?: string, options?: RequestInit) => {
         }
     }, [url]);
 
-    return { data, loading, error, refetch: fetchData };
+    return {
+        data, loading, error, refetch: (newUrl?: string, options?: RequestInit) => fetchData(newUrl ?? url, options)
+    };
 };

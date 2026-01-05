@@ -1,19 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useApiService } from "../../../../hook/data";
 import { useState } from "react";
+import { Button, ButtonGroup } from "../../../../components/SimpleUi";
+import { CmsPageApi } from "../../Types";
 
-
-export interface CmsPage {
-    content: string;
-    locale: string;
-    createdAt: string;
-    deletedAt: string | null;
-    id: number;
-    isActive: boolean;
-    slug: string;
-    title: string;
-    updatedAt: string;
-}
 
 const CmsPage = () => {
 
@@ -26,13 +16,13 @@ const CmsPage = () => {
         slug: '',
         isActive: false,
         locale: 'en',
-        htmlContnet: ''
+        content: ''
     });
-    const { data, loading, error, refetch } = useApiService<CmsPage>(`/cms/pages/page/${id}`);
+    const { data, loading, error, refetch } = useApiService<CmsPageApi>(`/cms/pages/page/${id}`);
 
-    const onSave = async (htmlContnet: string) => {
+    const onSave = async (content: string) => {
 
-        await refetch(`/cms/pages/page/${id}`, { method: 'PATCH', body: JSON.stringify({ ...formData, htmlContnet }) });
+        await refetch(`/cms/pages/page/${id}`, { method: 'PATCH', body: JSON.stringify({ ...formData }) });
     }
 
     if (loading) return <div>Ładowanie danych...</div>;
@@ -41,18 +31,22 @@ const CmsPage = () => {
 
     return (<div>
 
-        <a href="#" className="link" onClick={() => navigate('/cms/pages')}><>&#8630;</> back</a><br />
+        <ButtonGroup>
+            <Button href="#" onClick={() => navigate('/cms/pages')}><>&#8630;</> back</Button>
+            <Button to={`edit`} >Edit</Button>
+        </ButtonGroup>
 
-        <label>Title: {data.title}</label><br />
-        <label>Slug: {data.slug}</label><br />
-        <label>Active: {data.isActive ? 'Y' : 'N'}</label><br />
+        <div className="page-view">
+            <label>Title: {data.title}</label><br />
+            <label>Slug: {data.slug}</label><br />
+            <label>Active: {data.isActive ? 'Y' : 'N'}</label><br />
 
-        <div>
-            HTML: {data.content}
+            <div>
+                HTML: {data.content}
+            </div>
+
+            <p>Utworzono: {new Date(data.createdAt).toLocaleString()}; Ostatnia zmiana: {new Date(data.updatedAt).toLocaleString()}</p>
         </div>
-
-        <p>Utworzono: {new Date(data.createdAt).toLocaleString()}; Ostatnia zmiana: {new Date(data.updatedAt).toLocaleString()}</p>
-
     </div>);
 }
 

@@ -14,24 +14,49 @@
 
 .btn {
     @include btn-base;
-}
 
-.btn-primary {
-    @include btn-base;
-    background-color: #2563eb;
-    color: white;
+    &--primary {
+        @include btn-base;
+        background-color: #2563eb;
+        color: white;
 
-    &:hover {
-        background-color: #1d4ed8;
+        &:hover {
+            background-color: #1d4ed8;
+        }
+    }
+
+    &--secondary {
+        @include btn-base;
+        background-color: #e5e7eb;
+        color: #111827;
+
+        &:hover {
+            background-color: #d1d5db;
+        }
+    }
+
+    &--s-large {
+        padding: 0.35rem 1.5rem;
+        font-size: 1.125rem;
+    }
+    &--s-small {
+        padding: 0.15rem 0.5rem;
+        font-size: 0.875rem;
+    }
+    &--m-medium {
+        padding: 0.2rem 1rem;
+        font-size: 1rem;
     }
 }
 
-.btn-secondary {
-    @include btn-base;
-    background-color: #e5e7eb;
-    color: #111827;
+.btn-group {
+    display: inline-flex;
 
-    &:hover {
-        background-color: #d1d5db;
+    .btn {
+        margin-right: 0.5rem;
+
+        &:last-child {
+            margin-right: 0;
+        }
     }
 }

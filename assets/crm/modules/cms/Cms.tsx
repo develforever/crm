@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Navigate, NavLink } from "react-router-dom";
 import { Route, Routes } from "react-router-dom";
 import { CmsPages } from "./pages/CmsPages";
 
@@ -20,6 +20,7 @@ const CMS = () => {
         </nav>
 
         <Routes>
+            <Route index element={<Navigate to="/cms/pages" />} />
             <Route path="/pages/*" element={<CmsPages />} />
         </Routes>
     </div>);

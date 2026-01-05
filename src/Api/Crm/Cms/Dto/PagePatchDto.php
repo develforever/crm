@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class PagePatchDto
 {
     #[Assert\Type('string')]
-    public string $htmlContnet;
+    public string $content;
 
     #[Assert\Type('string')]
     public string $title;

@@ -1,7 +1,8 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useApiService } from "../../../../hook/data";
 import { HtmlEditor } from "../../HtmlEditor";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { CmsPageApi } from "../../Types";
 import { Button, ButtonGroup } from "../../../../components/SimpleUi";
 
 interface FormData {
@@ -11,6 +12,8 @@ interface FormData {
     isActive: boolean;
     locale: string;
     content: string;
+    createdAt: string;
+    updatedAt: string;
 }
 
 interface ChangeEvent {
@@ -22,8 +25,9 @@ interface ChangeEvent {
     };
 }
 
-const CmsPageCreate = () => {
+const CmsPageEdit = () => {
 
+    const { id } = useParams();
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState<FormData>({
@@ -32,16 +36,22 @@ const CmsPageCreate = () => {
         slug: '',
         isActive: false,
         locale: 'en',
-        content: ''
+        content: '',
+        createdAt: '',
+        updatedAt: ''
     });
-    const { data, loading, error, refetch } = useApiService();
+
+    const { data, loading, error, refetch } = useApiService<CmsPageApi>(`/cms/pages/page/${id}`);
+
+    useEffect(() => {
+        if (data) {
+            setFormData({ ...data });
+        }
+    }, [data]);
 
     const onSave = async (content: string) => {
-
-        await refetch(`/cms/pages/page`, { method: 'POST', body: JSON.stringify({ ...formData }) });
+        await refetch(undefined, { method: 'PUT', body: JSON.stringify({ ...formData }) });
     }
-
-
 
     const handleChange = (e: ChangeEvent) => {
         const { name, value, type, checked } = e.target;
@@ -53,24 +63,25 @@ const CmsPageCreate = () => {
 
     if (loading) return <div>Ładowanie danych...</div>;
     if (error) return <div>Wystąpił błąd: {error}</div>;
+    if (!data) return <div>Brak danych</div>;
 
     return (<div>
 
         <ButtonGroup>
             <Button href="#" onClick={() => navigate('/cms/pages')}><>&#8630;</> back</Button>
         </ButtonGroup>
-        <div className="page-create">
+
+        <div className="page-edit">
             <label>Title:</label><br />
             <input type="text" name="title" value={formData.title} onChange={handleChange} /><br />
             <label>Slug:</label><br />
             <input type="text" name="slug" value={formData.slug} onChange={handleChange} /><br />
             <label>Active:</label><br />
             <input type="checkbox" name="isActive" checked={formData.isActive} onChange={handleChange} /><br />
-
             <HtmlEditor initialContent={formData.content} onSave={onSave}></HtmlEditor>
-            <p>Utworzono: {new Date(data?.createdAt).toLocaleString()}; Ostatnia zmiana: {new Date(data?.updatedAt).toLocaleString()}</p>
+            <p>Utworzono: {new Date(formData?.createdAt).toLocaleString()}; Ostatnia zmiana: {new Date(formData?.updatedAt).toLocaleString()}</p>
         </div>
     </div>);
 }
 
-export { CmsPageCreate };
+export { CmsPageEdit };

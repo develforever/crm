@@ -65,6 +65,9 @@ Purpose
 - Follow existing coding styles and conventions.
 - Do not modify files, always preserve the original content unless explicitly instructed to change them.
 - Do not propose commits if not explicitly instructed.
+- SOLID principles must be followed in code.
+- KISS principle must be followed in code.
+- DRY principle must be followed in code.
 
 ---
 

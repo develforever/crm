@@ -44,22 +44,48 @@ final class PagesController extends AbstractController
 
     #[Route(
         '/crm/api/cms/pages/page',
-        name: 'app_crm_api_cms_page_put',
-        methods: 'PUT',
+        name: 'app_crm_api_cms_page_post',
+        methods: 'POST',
     )]
-    public function put(
+    public function post(
         #[MapRequestPayload()] PagePutDto $dto,
         EntityManagerInterface $em,
     ): JsonResponse {
 
         $page = new CmsPage();
-        $page->setContent($dto->htmlContnet);
+        $page->setContent($dto->content);
         $page->setTitle($dto->title);
         $page->setSlug($dto->slug);
         $page->setIsActive($dto->isActive);
-        $page->setTranslatableLocale($dto->locale);
+        $page->setTranslatableLocale($dto->locale ?? 'en');
 
         $em->persist($page);
+        $em->flush();
+
+        $data = new Data();
+        $data->data = $page;
+
+        return $this->json($data, 200, [], ['groups' => 'cms_view']);
+    }
+
+    #[Route(
+        '/crm/api/cms/pages/page/{id}',
+        name: 'app_crm_api_cms_page_put',
+        methods: 'PUT',
+    )]
+    public function put(
+        #[MapEntity()] CmsPage $page,
+        #[MapRequestPayload()] PagePutDto $dto,
+        EntityManagerInterface $em,
+    ): JsonResponse {
+
+
+        $page->setContent($dto->content);
+        $page->setTitle($dto->title);
+        $page->setSlug($dto->slug);
+        $page->setIsActive($dto->isActive);
+        $page->setTranslatableLocale($dto->locale ?? $page->getTranslatableLocale());
+
         $em->flush();
 
         $data = new Data();
@@ -83,8 +109,8 @@ final class PagesController extends AbstractController
             $page->setSlug($dto->slug);
         }
 
-        if ($dto->htmlContnet !== null) {
-            $page->setContent($dto->htmlContnet);
+        if ($dto->content !== null) {
+            $page->setContent($dto->content);
         }
 
         if ($dto->isActive !== null) {

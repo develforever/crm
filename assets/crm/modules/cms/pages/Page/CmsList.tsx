@@ -1,7 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useApiService } from "../../../../hook/data";
 import { useState } from "react";
-import { Button } from "../../../../components/SimpleUi";
+import { Button, ButtonGroup } from "../../../../components/SimpleUi";
 
 
 interface CmsPage {
@@ -34,11 +34,18 @@ const CmsList = () => {
 
     return (<div>
 
-        <a href="#" className="link" onClick={() => navigate('/cms')}><>&#8630;</> back</a><br />
-
-        <Button to={`page/create`} >Create New Page</Button>
-
+        <ButtonGroup>
+            <Button to={`page/create`} >Create New Page</Button>
+        </ButtonGroup>
         <table className="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Slug</th>
+                    <th>Title</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
             <tbody>
 
                 {data?.map((page: CmsPage) => {

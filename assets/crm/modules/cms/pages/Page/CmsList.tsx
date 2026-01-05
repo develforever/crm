@@ -36,7 +36,7 @@ const CmsList = () => {
 
         <a href="#" className="link" onClick={() => navigate('/cms')}><>&#8630;</> back</a><br />
 
-        <NavLink to={`page/create`} className="nav-link">Create New Page</NavLink>
+        <Button to={`page/create`} >Create New Page</Button>
 
         <table className="table">
             <tbody>

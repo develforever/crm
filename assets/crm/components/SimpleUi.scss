@@ -1,0 +1,37 @@
+@mixin btn-base {
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    font-weight: 500;
+    transition: opacity 0.2s;
+    cursor: pointer;
+    display: inline-block;
+
+    &:hover {
+        opacity: 0.9;
+    }
+}
+
+
+.btn {
+    @include btn-base;
+}
+
+.btn-primary {
+    @include btn-base;
+    background-color: #2563eb;
+    color: white;
+
+    &:hover {
+        background-color: #1d4ed8;
+    }
+}
+
+.btn-secondary {
+    @include btn-base;
+    background-color: #e5e7eb;
+    color: #111827;
+
+    &:hover {
+        background-color: #d1d5db;
+    }
+}

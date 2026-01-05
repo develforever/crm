@@ -1,8 +1,39 @@
 .navbar {
-    --bs-navbar-active-color: #000;
-}
+    background-color: #111827;
+    color: white;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-.navbar-nav .nav-link.active, .navbar-nav .nav-link.show {
-    font-weight: bold;
-    color: var(--bs-primary) !important;
+    .navbar-brand {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    &:nth-child(n+2) {
+        background-color: #111827c5;
+    }
+
+    a {
+        color: white;
+        transition: color 0.2s;
+
+        &:hover {
+            color: #d1d5db;
+        }
+    }
+
+    a.nav-link.active {
+        font-weight: bold;
+        text-decoration: underline;
+    }
+
+    .navbar-nav {
+        display: flex;
+        gap: 1rem;
+    }
 }

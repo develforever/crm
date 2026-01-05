@@ -3,20 +3,23 @@ import React from 'react';
 import { NavLink } from "react-router-dom";
 import clsx from "clsx";
 import './SimpleUi.scss';
+import { da } from 'zod/v4/locales';
 
 interface ButtonProps {
   label?: string,
   to?: string;
   href?: string;
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary'| 'danger';
   size?: 'small' | 'medium' | 'large';
   onClick?: () => void;
   children?: React.ReactNode;
+  [key: string]: any;
 }
 
 const variants = {
   primary: "btn btn--primary",
   secondary: "btn btn--secondary",
+  danger: "btn btn--danger",
 };
 
 const sizes = {

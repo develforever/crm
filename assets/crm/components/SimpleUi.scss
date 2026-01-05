@@ -35,6 +35,16 @@
         }
     }
 
+    &--danger {
+        @include btn-base;
+        background-color: #ef4444;
+        color: white;
+
+        &:hover {
+            background-color: #dc2626;
+        }
+    }
+
     &--s-large {
         padding: 0.35rem 1.5rem;
         font-size: 1.125rem;
@@ -51,6 +61,7 @@
 
 .btn-group {
     display: inline-flex;
+    margin: .2rem 0;
 
     .btn {
         margin-right: 0.5rem;

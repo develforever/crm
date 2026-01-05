@@ -37,7 +37,10 @@ const CmsPageCreate = () => {
     const { data, loading, error, refetch } = useApiService();
 
     const onSave = async (content: string) => {
-
+        setFormData({
+            ...formData,
+            content
+        });
         await refetch(`/cms/pages/page`, { method: 'POST', body: JSON.stringify({ ...formData }) });
     }
 

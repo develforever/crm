@@ -1,0 +1,16 @@
+.html-editor {
+    padding: 20px;
+    border: 1px solid #ccc;
+
+    &__header {
+        margin-bottom: 10px;
+    }
+
+    &__content {
+        min-height: 200px;
+        border: 1px solid #eee;
+        padding: 10px;
+        outline: none;
+        border: 1px solid #d1d5db;
+    }
+}

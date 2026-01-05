@@ -55,10 +55,10 @@ const CmsList = () => {
                         <td>{page.title}</td>
                         <td>
                             <div className="d-flex gap-2">
-                                {deleteId !== page.id ? (<>
+                                {deleteId !== page.id ? (<ButtonGroup>
                                     <Button label="View" to={`page/${page.id}`} />
-                                    <Button label="Delete" onClick={() => deletePage(page.id)} />
-                                </>)
+                                    <Button label="Delete" variant="danger" onClick={() => deletePage(page.id)} />
+                                </ButtonGroup>)
                                     :
                                     <span>Deleting...</span>
                                 }

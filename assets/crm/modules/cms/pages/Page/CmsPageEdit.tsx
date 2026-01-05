@@ -50,7 +50,8 @@ const CmsPageEdit = () => {
     }, [data]);
 
     const onSave = async (content: string) => {
-        await refetch(undefined, { method: 'PUT', body: JSON.stringify({ ...formData }) });
+
+        await refetch(undefined, { method: 'PUT', body: JSON.stringify({ ...formData, content }) });
     }
 
     const handleChange = (e: ChangeEvent) => {
@@ -71,15 +72,19 @@ const CmsPageEdit = () => {
             <Button href="#" onClick={() => navigate('/cms/pages')}><>&#8630;</> back</Button>
         </ButtonGroup>
 
-        <div className="page-edit">
-            <label>Title:</label><br />
-            <input type="text" name="title" value={formData.title} onChange={handleChange} /><br />
-            <label>Slug:</label><br />
-            <input type="text" name="slug" value={formData.slug} onChange={handleChange} /><br />
-            <label>Active:</label><br />
-            <input type="checkbox" name="isActive" checked={formData.isActive} onChange={handleChange} /><br />
-            <HtmlEditor initialContent={formData.content} onSave={onSave}></HtmlEditor>
-            <p>Utworzono: {new Date(formData?.createdAt).toLocaleString()}; Ostatnia zmiana: {new Date(formData?.updatedAt).toLocaleString()}</p>
+        <div className="cmspage-form">
+            <form className="form" onSubmit={(e) => { e.preventDefault(); onSave(formData.content); }}>
+                <label htmlFor="cmspage_title" className="form__label">Title:</label>
+                <input type="text" className="form__input" id={`cmspage_title`} name="title" value={formData.title} onChange={handleChange} />
+
+                <label htmlFor="cmspage_slug" className="form__label">Slug:</label>
+                <input type="text" className="form__input" id={`cmspage_slug`} name="slug" value={formData.slug} onChange={handleChange} />
+
+                <label htmlFor="cmspage_isActive" className="form__label">Active:</label>
+                <input type="checkbox" className="form__checkbox" id={`cmspage_isActive`} name="isActive" checked={formData.isActive} onChange={handleChange} />
+                <HtmlEditor initialContent={formData.content} onSave={onSave}></HtmlEditor>
+                <p>Utworzono: {new Date(formData?.createdAt).toLocaleString()}; Ostatnia zmiana: {new Date(formData?.updatedAt).toLocaleString()}</p>
+            </form>
         </div>
     </div>);
 }

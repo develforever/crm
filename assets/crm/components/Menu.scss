@@ -35,5 +35,26 @@
     .navbar-nav {
         display: flex;
         gap: 1rem;
+        position: relative;
+    }
+
+    .nav-item {
+        position: relative;
+    }
+    .navbar-nav-sub {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: #1f2937;
+        padding: 0.5rem;
+        border-radius: 0.25rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        z-index: 1000;
+    }
+    .collapsed {
+        display: none;
     }
 }

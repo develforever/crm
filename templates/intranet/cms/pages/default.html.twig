@@ -1,16 +1,17 @@
 {% extends 'intranet.html.twig' %}
 
-{% block title %}{{page.title}}
+{% block title %}
+	{{page.title}}
 {% endblock %}
 
 {% block header %}
-		{{ include('intranet/cms/pages/_menu.html.twig') }}
+	{{ include('intranet/cms/pages/_menu.html.twig') }}
 {% endblock %}
 
 {% block body %}
-{{ dump(page) }}
+	{{ cms_page_content(page.content) }}
 {% endblock %}
 
 {% block side  %}
-{{ cms_widget('side') }}
+	{{ cms_widget('side') }}
 {% endblock %}

@@ -1,9 +1,18 @@
 .html-editor {
     padding: 20px;
     border: 1px solid #ccc;
+    position: relative;
 
     &__header {
         margin-bottom: 10px;
+    }
+
+    &__status {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 14px;
+        color: #6b7280;
     }
 
     &__content {

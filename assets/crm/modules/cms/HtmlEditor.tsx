@@ -5,28 +5,42 @@ import DOMPurify from 'dompurify';
 
 interface HtmlEditorProps {
     initialContent?: string;
+    statusLabel?: string;
     onSave?: (content: string) => void;
 }
 
 const HtmlEditor = ({
     initialContent = '',
+    statusLabel = '',
     onSave = (content: string) => { },
 }: HtmlEditorProps) => {
 
     const contentRef = useRef<HTMLDivElement>(null);
+    const [disabled, setDisabled] = useState({
+        save: false,
+        undo: false,
+    });
 
     useEffect(() => {
         if (contentRef.current) {
             contentRef.current.innerHTML = DOMPurify.sanitize(initialContent);
+
+            contentRef.current.addEventListener('input', () => {
+                normalize(contentRef.current!);
+            });
         }
     }, [initialContent]);
 
     const handleSave = async () => {
+        setDisabled({ ...disabled, save: true });
 
+        await new Promise(resolve => setTimeout(resolve, 100));
         if (onSave) {
-            onSave(contentRef.current?.innerHTML || '');
+            await onSave(contentRef.current?.innerHTML || '');
         }
 
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        setDisabled({ ...disabled, save: false });
     };
 
     const handleUndo = () => {
@@ -187,6 +201,7 @@ const HtmlEditor = ({
     return (
         <div className="html-editor">
             <h5 className='html-editor__header'>Edytor treści</h5>
+            {statusLabel && <span className="html-editor__status">{statusLabel}</span>}
 
             <div>
                 <ButtonGroup>
@@ -205,8 +220,8 @@ const HtmlEditor = ({
                 ></div>
             </div>
             <ButtonGroup>
-                <Button type="button" onClick={handleUndo}>Cofnij</Button>
-                <Button type="button" onClick={handleSave}>Zapisz zmiany</Button>
+                <Button type="button" onClick={handleUndo} disabled={disabled.undo}>Cofnij</Button>
+                <Button type="button" disabled={disabled.save} onClick={handleSave}>Zapisz zmiany</Button>
             </ButtonGroup>
         </div>
     );

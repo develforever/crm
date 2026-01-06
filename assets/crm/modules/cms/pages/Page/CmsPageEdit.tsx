@@ -40,18 +40,24 @@ const CmsPageEdit = () => {
         createdAt: '',
         updatedAt: ''
     });
+    
+    const [status, setStatus] = useState<string>('');
+    const [statusInt, setStatusInt] = useState<NodeJS.Timeout>();
 
     const { data, loading, error, refetch } = useApiService<CmsPageApi>(`/cms/pages/page/${id}`);
 
     useEffect(() => {
         if (data) {
             setFormData({ ...data });
+            setStatusInt(setTimeout(() => setStatus(''), 5000));
         }
     }, [data]);
 
     const onSave = async (content: string) => {
-
+        clearTimeout(statusInt);
+        setStatus('Saving...');
         await refetch(undefined, { method: 'PUT', body: JSON.stringify({ ...formData, content }) });
+        setStatus('Saved: ' + new Date(formData.updatedAt).toLocaleString());
     }
 
     const handleChange = (e: ChangeEvent) => {
@@ -62,14 +68,15 @@ const CmsPageEdit = () => {
         });
     };
 
-    if (loading) return <div>Ładowanie danych...</div>;
+    if (!data && loading) return <div>Ładowanie danych...</div>;
     if (error) return <div>Wystąpił błąd: {error}</div>;
     if (!data) return <div>Brak danych</div>;
 
     return (<div>
 
         <ButtonGroup>
-            <Button href="#" onClick={() => navigate('/cms/pages')}><>&#8630;</> back</Button>
+            <Button href="#" onClick={() => navigate('/cms/pages')}><>&#8630;</> Back</Button>
+            <Button href={`/en/${formData.slug}`} target="_blank">Preview</Button>
         </ButtonGroup>
 
         <div className="cmspage-form">
@@ -82,7 +89,7 @@ const CmsPageEdit = () => {
 
                 <label htmlFor="cmspage_isActive" className="form__label">Active:</label>
                 <input type="checkbox" className="form__checkbox" id={`cmspage_isActive`} name="isActive" checked={formData.isActive} onChange={handleChange} />
-                <HtmlEditor initialContent={formData.content} onSave={onSave}></HtmlEditor>
+                <HtmlEditor statusLabel={status} initialContent={formData.content} onSave={onSave}></HtmlEditor>
                 <p>Utworzono: {new Date(formData?.createdAt).toLocaleString()}; Ostatnia zmiana: {new Date(formData?.updatedAt).toLocaleString()}</p>
             </form>
         </div>

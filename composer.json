@@ -86,7 +86,7 @@
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
-            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"symfony server:start\" \"npm run watch\" --names=server,encore --kill-others-on-failure"
+            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"docker compose up\" \"symfony server:start\" \"npm run watch\" --names=docker,server,encore --kill-others-on-failure"
         ],
         "auto-scripts": {
             "cache:clear": "symfony-cmd",

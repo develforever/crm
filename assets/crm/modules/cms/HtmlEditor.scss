@@ -12,5 +12,13 @@
         padding: 10px;
         outline: none;
         border: 1px solid #d1d5db;
+
+        .placeholder {
+            background-color: #f3f4f6;
+            border: 1px dashed #9ca3af;
+            padding: 2px 4px;
+            color: #6b7280;
+            display: inline-block;
+        }
     }
 }

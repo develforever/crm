@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import { CmsPages } from "./pages/CmsPages";
 import { useCallback, useEffect, useRef } from "react";
 import { CmsMenus } from "./menus/CmsMenus";
-import { CmsWidgets } from "./menus/CmsWidgets";
+import { CmsWidgets } from "./widgets/CmsWidgets";
 
 const CMS = () => {
 
@@ -24,7 +24,6 @@ const CMS = () => {
     }, []);
 
     useEffect(() => {
-
 
         contentSubRef.current?.ownerDocument.addEventListener("click", docClick);
 

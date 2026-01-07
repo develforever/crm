@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
-import { ViewWidget } from "./Widgets/View";
-import { CreateWidget } from "./Widgets/Create";
-import { ListWidget } from "./Widgets/List";
+import { ViewWidget } from "./Widget/View";
+import { CreateWidget } from "./Widget/Create";
+import { ListWidget } from "./Widget/List";
 
 
 const CmsWidgets = () => {

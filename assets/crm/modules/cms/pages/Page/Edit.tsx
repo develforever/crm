@@ -25,7 +25,7 @@ interface ChangeEvent {
     };
 }
 
-const CmsPageEdit = () => {
+const EditPage = () => {
 
     const { id } = useParams();
     const navigate = useNavigate();
@@ -96,4 +96,4 @@ const CmsPageEdit = () => {
     </div>);
 }
 
-export { CmsPageEdit };
+export { EditPage };

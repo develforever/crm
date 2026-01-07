@@ -14,14 +14,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
-
+#[Route('/crm/api/cms')]
 final class PagesController extends AbstractController
 {
     public function __construct(
         private CmsPageRepository $pageRepo,
     ) {}
 
-    #[Route('/crm/api/cms/pages', name: 'app_crm_api_cms_pages', methods: 'GET')]
+    #[Route('/pages', name: 'app_crm_api_cms_pages', methods: 'GET')]
     public function index(): JsonResponse
     {
         $data = new Data();
@@ -31,7 +31,7 @@ final class PagesController extends AbstractController
         return $this->json($data, 200, [], ['groups' => 'cms_read']);
     }
 
-    #[Route('/crm/api/cms/pages/page/{id}', name: 'app_crm_api_cms_page_view', methods: 'GET')]
+    #[Route('/pages/page/{id}', name: 'app_crm_api_cms_page_view', methods: 'GET')]
     public function view(
         #[MapEntity()] CmsPage $page
     ): JsonResponse {
@@ -43,7 +43,7 @@ final class PagesController extends AbstractController
     }
 
     #[Route(
-        '/crm/api/cms/pages/page',
+        '/pages/page',
         name: 'app_crm_api_cms_page_post',
         methods: 'POST',
     )]
@@ -69,7 +69,7 @@ final class PagesController extends AbstractController
     }
 
     #[Route(
-        '/crm/api/cms/pages/page/{id}',
+        '/pages/page/{id}',
         name: 'app_crm_api_cms_page_put',
         methods: 'PUT',
     )]
@@ -94,7 +94,7 @@ final class PagesController extends AbstractController
         return $this->json($data, 200, [], ['groups' => 'cms_view']);
     }
 
-    #[Route('/crm/api/cms/pages/page/{id}', name: 'app_crm_api_cms_page_patch', methods: 'PATCH')]
+    #[Route('/pages/page/{id}', name: 'app_crm_api_cms_page_patch', methods: 'PATCH')]
     public function patch(
         #[MapEntity()] CmsPage $page,
         #[MapRequestPayload()] PagePatchDto $dto,
@@ -129,7 +129,7 @@ final class PagesController extends AbstractController
         return $this->json($data, 200, [], ['groups' => 'cms_view']);
     }
 
-    #[Route('/crm/api/cms/pages/page/{id}', name: 'app_crm_api_cms_page_delete', methods: 'DELETE')]
+    #[Route('/pages/page/{id}', name: 'app_crm_api_cms_page_delete', methods: 'DELETE')]
     public function delete(
         #[MapEntity()] CmsPage $page,
         EntityManagerInterface $em,

@@ -1,20 +1,19 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useApiService } from "../../../../hook/data";
 import { useState } from "react";
 import { Button, ButtonGroup } from "../../../../components/SimpleUi";
 
-
-interface CmsPage {
+interface CmsMenu {
     id: string | number;
-    slug: string;
+    name: string;
     title: string;
 }
 
-const CmsList = () => {
+const ListWidget = () => {
 
     const navigate = useNavigate();
-    const { data, loading, error, refetch } = useApiService('/cms/pages');
-    // const { dataDelete, loadingDelete, errorDelete, refetchDelete } = useApiService();
+    const { data, loading, error, refetch } = useApiService('/cms/widgets');
+
     const [deleteId, setDeleteId] = useState<string | number | null>(null);
 
     if (loading) return <div>Ładowanie danych...</div>;
@@ -22,42 +21,41 @@ const CmsList = () => {
 
     const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-    const deletePage = async (id: string | number) => {
+    const deleteWidget = async (id: string | number) => {
         setDeleteId(id);
-        //await refetch(`/cms/pages/page/${id}`, { method: 'DELETE' });
-        console.log(`Delete page ${id}`);
+        console.log(`Delete widget ${id}`);
 
         await sleep(1500)
             .then(() => setDeleteId(null));
-        console.log(`Deleted page ${id}`);
+        console.log(`Deleted widget ${id}`);
     }
 
     return (<div>
 
         <ButtonGroup>
-            <Button to={`page/create`} >Create New Page</Button>
+            <Button to={`/cms/widgets/create`} >Create New Widget</Button>
         </ButtonGroup>
         <table className="table">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Slug</th>
+                    <th>Name</th>
                     <th>Title</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
 
-                {data?.map((page: CmsPage) => {
-                    return <tr key={page.id}>
-                        <td>{page.id}</td>
-                        <td>{page.slug}</td>
-                        <td>{page.title}</td>
+                {data?.map((item: CmsMenu) => {
+                    return <tr key={item.id}>
+                        <td>{item.id}</td>
+                        <td>{item.name}</td>
+                        <td>{item.title}</td>
                         <td>
                             <div className="d-flex gap-2">
-                                {deleteId !== page.id ? (<ButtonGroup>
-                                    <Button label="View" to={`page/${page.id}`} />
-                                    <Button label="Delete" variant="danger" onClick={() => deletePage(page.id)} />
+                                {deleteId !== item.id ? (<ButtonGroup>
+                                    <Button label="View" to={`/cms/widgets/${item.id}`} />
+                                    <Button label="Delete" variant="danger" onClick={() => deleteWidget(item.id)} />
                                 </ButtonGroup>)
                                     :
                                     <span>Deleting...</span>
@@ -68,8 +66,8 @@ const CmsList = () => {
                 })}
             </tbody>
         </table>
-    </div>
-    );
-}
 
-export { CmsList };
+    </div>)
+};
+
+export { ListWidget };

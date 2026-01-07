@@ -5,7 +5,7 @@ import { Button, ButtonGroup } from "../../../../components/SimpleUi";
 import { CmsPageApi } from "../../Types";
 
 
-const CmsPage = () => {
+const ViewPage = () => {
 
     const { id } = useParams();
     const navigate = useNavigate();
@@ -50,4 +50,4 @@ const CmsPage = () => {
     </div>);
 }
 
-export { CmsPage };
+export { ViewPage };

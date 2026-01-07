@@ -6,6 +6,7 @@ use App\Repository\CmsMenuRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: CmsMenuRepository::class)]
 class CmsMenu
@@ -13,18 +14,22 @@ class CmsMenu
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['cms_read', 'cms_view'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['cms_read', 'cms_view'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['cms_read', 'cms_view'])]
     private ?string $name = null;
 
     /**
      * @var Collection<int, CmsMenuItem>
      */
     #[ORM\OneToMany(targetEntity: CmsMenuItem::class, mappedBy: 'menu', cascade: ['persist', 'remove'])]
+    #[Groups(['cms_view'])]
     private Collection $cmsMenuItems;
 
     public function __construct()

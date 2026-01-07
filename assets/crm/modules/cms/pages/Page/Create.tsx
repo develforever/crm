@@ -22,7 +22,7 @@ interface ChangeEvent {
     };
 }
 
-const CmsPageCreate = () => {
+const CreatePage = () => {
 
     const navigate = useNavigate();
 
@@ -76,4 +76,4 @@ const CmsPageCreate = () => {
     </div>);
 }
 
-export { CmsPageCreate };
+export { CreatePage };

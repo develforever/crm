@@ -46,7 +46,6 @@ class AppFixtures extends Fixture
         $menuItemCrm->setUrl('/crm');
         $menuItemCrm->setLabel('CRM');
         $menuItemCrm->setPosition(0);
-
         $main_menu->addCmsMenuItem($menuItemCrm);
 
         $manager->persist($main_menu);

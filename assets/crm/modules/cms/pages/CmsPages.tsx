@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
-import { CmsList } from "./Page/CmsList";
-import { CmsPage } from "./Page/CmsPage";
-import { CmsPageCreate } from "./Page/CmsPageCreate";
-import { CmsPageEdit } from "./Page/CmsPageEdit";
+import { List } from "./Page/List";
+import { ViewPage } from "./Page/View";
+import { CreatePage } from "./Page/Create";
+import { EditPage } from "./Page/Edit";
 
 
 const CmsPages = () => {
@@ -10,10 +10,10 @@ const CmsPages = () => {
 
     return (
         <Routes>
-            <Route path="/" element={<CmsList />} />
-            <Route path="/page/create" element={<CmsPageCreate />} />
-            <Route path="/page/:id/edit" element={<CmsPageEdit />} />
-            <Route path="/page/:id" element={<CmsPage />} />
+            <Route path="/" element={<List />} />
+            <Route path="/page/create" element={<CreatePage />} />
+            <Route path="/page/:id/edit" element={<EditPage />} />
+            <Route path="/page/:id" element={<ViewPage />} />
         </Routes>);
 };
 

@@ -6,6 +6,7 @@ use App\Repository\CmsWidgetRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: CmsWidgetRepository::class)]
 class CmsWidget
@@ -13,18 +14,22 @@ class CmsWidget
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['cms_read', 'cms_view'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['cms_read', 'cms_view'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['cms_read', 'cms_view'])]
     private ?string $title = null;
 
     /**
      * @var Collection<int, CmsWidgetItem>
      */
     #[ORM\OneToMany(targetEntity: CmsWidgetItem::class, mappedBy: 'widget')]
+    #[Groups(['cms_view'])]
     private Collection $cmsWidgetItems;
 
     public function __construct()

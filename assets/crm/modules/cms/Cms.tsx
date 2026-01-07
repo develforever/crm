@@ -2,6 +2,8 @@ import { Navigate, NavLink } from "react-router-dom";
 import { Route, Routes } from "react-router-dom";
 import { CmsPages } from "./pages/CmsPages";
 import { useCallback, useEffect, useRef } from "react";
+import { CmsMenus } from "./menus/CmsMenus";
+import { CmsWidgets } from "./menus/CmsWidgets";
 
 const CMS = () => {
 
@@ -12,7 +14,7 @@ const CMS = () => {
 
         if (!(e.target instanceof Element)) return;
 
-        if (e.target.closest('.navbar-nav-sub')) {
+        if (!e.target.closest('.navbar-nav-sub')) {
 
             if (contentSubRef.current && !contentSubRef.current.classList.contains("collapsed")) {
                 contentSubRef.current.classList.add("collapsed");
@@ -27,7 +29,6 @@ const CMS = () => {
         contentSubRef.current?.ownerDocument.addEventListener("click", docClick);
 
         return () => {
-            console.log("CMS Unmounted");
             contentSubRef.current?.ownerDocument.removeEventListener("click", docClick);
         };
     }, []);
@@ -71,8 +72,8 @@ const CMS = () => {
 
         <Routes>
             <Route index element={<Navigate to="/cms/pages" />} />
-            <Route path="/widgets/*" element={<>Widgets</>} />
-            <Route path="/menus/*" element={<>Menus</>} />
+            <Route path="/widgets/*" element={<CmsWidgets />} />
+            <Route path="/menus/*" element={<CmsMenus />} />
             <Route path="/contents/images/*" element={<>Images</>} />
             <Route path="/contents/htmls/*" element={<>Htmls</>} />
             <Route path="/contents/texts/*" element={<>Texts</>} />

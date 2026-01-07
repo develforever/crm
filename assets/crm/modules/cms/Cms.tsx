@@ -10,11 +10,9 @@ const CMS = () => {
 
     const docClick = useCallback((e: MouseEvent) => {
 
-        const target = e.target as HTMLElement | null;
+        if (!(e.target instanceof Element)) return;
 
-        if (!target) return;
-
-        if (target.closest('.navbar-nav-sub')) {
+        if (e.target.closest('.navbar-nav-sub')) {
 
             if (contentSubRef.current && !contentSubRef.current.classList.contains("collapsed")) {
                 contentSubRef.current.classList.add("collapsed");

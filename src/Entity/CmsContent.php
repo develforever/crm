@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CmsContentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: CmsContentRepository::class)]
 #[ORM\InheritanceType('JOINED')]
@@ -18,6 +19,7 @@ class CmsContent
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['cms_read', 'cms_view'])]
     private ?int $id = null;
 
     public function getId(): ?int

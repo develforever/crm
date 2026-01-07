@@ -1,22 +1,21 @@
-import { useState } from "react";
-import { Button, ButtonGroup } from "../../../../components/SimpleUi";
 import { useNavigate } from "react-router-dom";
+import { Button, ButtonGroup } from "../../../../components/SimpleUi";
+import { useState } from "react";
 import { useApiService } from "../../../../hook/data";
 
-interface WidgetFormProps {
+
+interface TextFormProps {
     onSave?: (data: any) => void;
 }
 
-const WidgetForm = ({
+const TextForm = ({
     onSave = () => { console.log('onSave not implemented') }
-}: WidgetFormProps) => {
-
+}: TextFormProps) => {
 
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
-        name: '',
-        title: ''
+        plainText: ''
     });
     const { data, loading, error, refetch } = useApiService();
 
@@ -29,9 +28,9 @@ const WidgetForm = ({
             await onSave(formData);
         }
 
-        await refetch(`/cms/widgets`, { method: 'POST', body: JSON.stringify({ ...formData }) });
+        await refetch(`/cms/contents/texts`, { method: 'POST', body: JSON.stringify({ ...formData }) });
 
-        navigate('/cms/widgets');
+        navigate('/cms/contents/texts');
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,9 +41,7 @@ const WidgetForm = ({
         <form onSubmit={onSubmit} className="form">
             <div className="form__group">
                 <label className="form__label">Name:</label>
-                <input type="text" className="form__input" name="name" value={formData.name} onChange={handleChange} />
-                <label className="form__label">Title:</label>
-                <input type="text" className="form__input" name="title" value={formData.title} onChange={handleChange} />
+                <input type="text" className="form__input" name="plainText" value={formData.plainText} onChange={handleChange} />
             </div>
             <ButtonGroup>
                 <Button type="submit">Create</Button>
@@ -52,14 +49,17 @@ const WidgetForm = ({
             </ButtonGroup>
         </form>
     </div>);
-}
 
+};
 
+const Create = () => {
 
-const CreateWidget = () => {
     return (<div>
-        <h4>Create Widget</h4>
-        <WidgetForm />
+        <h1>Text Create</h1>
+
+        <TextForm ></TextForm>
+
     </div>);
 }
-export { CreateWidget };
+
+export { Create };

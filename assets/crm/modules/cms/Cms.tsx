@@ -4,6 +4,7 @@ import { CmsPages } from "./pages/CmsPages";
 import { useCallback, useEffect, useRef } from "react";
 import { CmsMenus } from "./menus/CmsMenus";
 import { CmsWidgets } from "./widgets/CmsWidgets";
+import { CmsContents } from "./contents/CmsContents";
 
 const CMS = () => {
 
@@ -73,9 +74,7 @@ const CMS = () => {
             <Route index element={<Navigate to="/cms/pages" />} />
             <Route path="/widgets/*" element={<CmsWidgets />} />
             <Route path="/menus/*" element={<CmsMenus />} />
-            <Route path="/contents/images/*" element={<>Images</>} />
-            <Route path="/contents/htmls/*" element={<>Htmls</>} />
-            <Route path="/contents/texts/*" element={<>Texts</>} />
+            <Route path="/contents/*" element={<CmsContents />} />
             <Route path="/pages/*" element={<CmsPages />} />
         </Routes>
     </div>);

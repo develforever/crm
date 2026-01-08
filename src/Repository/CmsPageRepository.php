@@ -16,6 +16,12 @@ class CmsPageRepository extends ServiceEntityRepository
         parent::__construct($registry, CmsPage::class);
     }
 
+    public function findActiveBySlugAndLocale($slug)
+    {
+
+        return $this->findOneBy(['slug' => $slug, 'isActive' => true]);
+    }
+
     //    /**
     //     * @return CmsPage[] Returns an array of CmsPage objects
     //     */

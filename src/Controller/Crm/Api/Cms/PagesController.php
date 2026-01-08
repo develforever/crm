@@ -4,12 +4,11 @@ namespace App\Controller\Crm\Api\Cms;
 
 use App\Api\Crm\Cms\Dto\PagePatchDto;
 use App\Api\Crm\Cms\Dto\PagePutDto;
-use App\Api\Crm\Data;
+use App\Controller\Crm\Api\AbstractController;
 use App\Entity\CmsPage;
 use App\Repository\CmsPageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
@@ -24,22 +23,17 @@ final class PagesController extends AbstractController
     #[Route('/pages', name: 'app_crm_api_cms_pages', methods: 'GET')]
     public function index(): JsonResponse
     {
-        $data = new Data();
 
-        $data->data = $this->pageRepo->findAll();
-
-        return $this->json($data, 200, [], ['groups' => 'cms_read']);
+        return $this->createDataResponse($this->pageRepo->findAll());
     }
 
     #[Route('/pages/page/{id}', name: 'app_crm_api_cms_page_view', methods: 'GET')]
     public function view(
         #[MapEntity()] CmsPage $page
     ): JsonResponse {
-        $data = new Data();
+       
 
-        $data->data = $page;
-
-        return $this->json($data, 200, [], ['groups' => 'cms_view']);
+        return $this->createDataResponse($page);
     }
 
     #[Route(
@@ -62,10 +56,8 @@ final class PagesController extends AbstractController
         $em->persist($page);
         $em->flush();
 
-        $data = new Data();
-        $data->data = $page;
 
-        return $this->json($data, 200, [], ['groups' => 'cms_view']);
+        return $this->createDataResponse($page);
     }
 
     #[Route(
@@ -88,10 +80,7 @@ final class PagesController extends AbstractController
 
         $em->flush();
 
-        $data = new Data();
-        $data->data = $page;
-
-        return $this->json($data, 200, [], ['groups' => 'cms_view']);
+        return $this->createDataResponse($page);
     }
 
     #[Route('/pages/page/{id}', name: 'app_crm_api_cms_page_patch', methods: 'PATCH')]
@@ -122,11 +111,8 @@ final class PagesController extends AbstractController
         }
 
         $em->flush();
-        $data = new Data();
-
-        $data->data = $page;
-
-        return $this->json($data, 200, [], ['groups' => 'cms_view']);
+     
+        return $this->createDataResponse($page);
     }
 
     #[Route('/pages/page/{id}', name: 'app_crm_api_cms_page_delete', methods: 'DELETE')]
@@ -138,10 +124,7 @@ final class PagesController extends AbstractController
 
         $em->remove($page);
         $em->flush();
-        $data = new Data();
 
-        $data->data = $page;
-
-        return $this->json($data, 200, [], ['groups' => 'cms_view']);
+        return $this->createDataResponse($page);
     }
 }

@@ -2,12 +2,11 @@
 
 namespace App\Controller\Crm\Api\Cms;
 
-use App\Api\Crm\Data;
 use App\Entity\CmsWidget;
 use App\Api\Crm\Cms\Dto\WidgetPostDto;
+use App\Controller\Crm\Api\AbstractController;
 use App\Repository\CmsWidgetRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
@@ -23,11 +22,8 @@ final class WidgetsController extends AbstractController
     #[Route('/widgets', name: 'app_crm_api_cms_widgets', methods: 'GET')]
     public function index(): JsonResponse
     {
-        $data = new Data();
 
-        $data->data = $this->widgetRepo->findAll();
-
-        return $this->json($data, 200, [], ['groups' => 'cms_read']);
+        return $this->createDataResponse($this->widgetRepo->findAll());
     }
 
     #[Route('/widgets', name: 'app_crm_api_cms_widgets_post', methods: 'POST')]
@@ -42,8 +38,6 @@ final class WidgetsController extends AbstractController
         $em->persist($widget);
         $em->flush();
 
-        $data = new Data();
-        $data->data = $widget;
-        return $this->json($data, 200, [], ['groups' => 'cms_read']);
+        return $this->createDataResponse($widget);
     }
 }

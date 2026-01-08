@@ -4,18 +4,18 @@ import { useState } from "react";
 import { useApiService } from "../../../../hook/data";
 
 
-interface TextFormProps {
+interface HtmlFormProps {
     onSave?: (data: any) => void;
 }
 
-const TextForm = ({
+const HtmlForm = ({
     onSave = () => { console.log('onSave not implemented') }
-}: TextFormProps) => {
+}: HtmlFormProps) => {
 
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
-        plainText: ''
+        content: ''
     });
     const { data, loading, error, refetch } = useApiService();
 
@@ -28,9 +28,9 @@ const TextForm = ({
             await onSave(formData);
         }
 
-        await refetch(`/cms/contents/texts`, { method: 'POST', body: JSON.stringify({ ...formData }) });
+        await refetch(`/cms/contents/htmls`, { method: 'POST', body: JSON.stringify({ ...formData }) });
 
-        navigate('/cms/contents/texts');
+        navigate('/cms/contents/htmls');
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,11 +41,11 @@ const TextForm = ({
         <form onSubmit={onSubmit} className="form">
             <div className="form__group">
                 <label className="form__label">Name:</label>
-                <input type="text" className="form__input" name="plainText" value={formData.plainText} onChange={handleChange} />
+                <input type="text" className="form__input" name="content" value={formData.content} onChange={handleChange} />
             </div>
             <ButtonGroup>
                 <Button type="submit">Create</Button>
-                <Button type="button" onClick={() => navigate('/cms/contents/texts')}>Cancel</Button>
+                <Button type="button" onClick={() => navigate('/cms/contents/htmls')}>Cancel</Button>
             </ButtonGroup>
         </form>
     </div>);
@@ -57,7 +57,7 @@ const Create = () => {
     return (<div>
         <h1>Text Create</h1>
 
-        <TextForm ></TextForm>
+        <HtmlForm />
 
     </div>);
 }

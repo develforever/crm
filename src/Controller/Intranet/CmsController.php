@@ -24,7 +24,8 @@ final class CmsController extends AbstractController
     )]
     public function dispatch(string $_locale, string $slug, CmsPageRepository $pageRepo): Response
     {
-        $page = $pageRepo->findOneBy(['slug' => $slug, 'isActive' => true]);
+
+        $page = $pageRepo->findActiveBySlugAndLocale($slug);
 
         if (!$page) {
             throw $this->createNotFoundException('Strona nie istnieje w CMS.');

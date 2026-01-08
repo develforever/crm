@@ -6,9 +6,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\CmsPageRepository;
+use App\Service\Cms\TemplateResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class CmsController extends AbstractController
 {
+
+    public function __construct(
+        private TranslatorInterface $translator,
+        private TemplateResolver $templateResolver,
+    ) {}
+
     #[Route(
         '/{_locale}/{slug}',
         name: 'cms_page',
@@ -28,20 +36,12 @@ final class CmsController extends AbstractController
         $page = $pageRepo->findActiveBySlugAndLocale($slug);
 
         if (!$page) {
-            throw $this->createNotFoundException('Strona nie istnieje w CMS.');
+            throw $this->createNotFoundException($this->translator->trans('page_not_found', [
+                '{slug}' => $slug,
+            ]));
         }
 
-        // 1. Czyścimy slug do nazwy pliku (zamiana / na _ )
-        $templateSafeSlug = str_replace('/', '_', $slug);
-
-        // 2. Definiujemy ścieżkę dedykowaną i domyślną
-        $customTemplate = sprintf('intranet/cms/pages/%s.html.twig', $templateSafeSlug);
-        $defaultTemplate = 'intranet/cms/pages/default.html.twig';
-
-        // 3. Sprawdzamy, czy deweloper stworzył dedykowany plik
-        $template = $this->container->get('twig')->getLoader()->exists($customTemplate)
-            ? $customTemplate
-            : $defaultTemplate;
+        $template = $this->templateResolver->resolveForPage($slug);
 
         return $this->render($template, [
             'page' => $page

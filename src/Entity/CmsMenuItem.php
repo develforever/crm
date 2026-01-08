@@ -2,27 +2,36 @@
 
 namespace App\Entity;
 
+use App\Entity\Trait\UpdateFromDtoTrait;
 use App\Repository\CmsMenuItemRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: CmsMenuItemRepository::class)]
 class CmsMenuItem
 {
+    use UpdateFromDtoTrait;
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['cms_read', 'cms_view'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['cms_read', 'cms_view'])]
     private ?string $label = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['cms_read', 'cms_view'])]
     private ?string $url = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['cms_read', 'cms_view'])]
     private ?string $target = null;
 
     #[ORM\Column]
+    #[Groups(['cms_read', 'cms_view'])]
     private ?int $position = null;
 
     #[ORM\ManyToOne(inversedBy: 'cmsMenuItems')]

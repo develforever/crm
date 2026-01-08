@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Trait\UpdateFromDtoTrait;
 use App\Repository\CmsContentRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -16,6 +17,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
 ])]
 class CmsContent
 {
+    use UpdateFromDtoTrait;
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

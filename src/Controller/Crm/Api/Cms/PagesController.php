@@ -10,6 +10,7 @@ use App\Repository\CmsPageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -21,17 +22,25 @@ final class PagesController extends AbstractController
     ) {}
 
     #[Route('/pages', name: 'app_crm_api_cms_pages', methods: 'GET')]
-    public function index(): JsonResponse
+    public function index(
+        Request $request,
+    ): JsonResponse
     {
+        $page = max(1, (int) $request->query->get('page', 1));
+        $limit = min(100, max(1, (int) $request->query->get('limit', 10)));
 
-        return $this->createDataResponse($this->pageRepo->findAll());
+        $items = $this->pageRepo->findPaginated($page, $limit);
+        // TODO: zwrócić w api w meta informacje o paginatorze
+        $total = $this->pageRepo->countAll();
+
+        return $this->createDataResponse($items);
     }
 
     #[Route('/pages/page/{id}', name: 'app_crm_api_cms_page_view', methods: 'GET')]
     public function view(
         #[MapEntity()] CmsPage $page
     ): JsonResponse {
-       
+
 
         return $this->createDataResponse($page);
     }
@@ -47,11 +56,8 @@ final class PagesController extends AbstractController
     ): JsonResponse {
 
         $page = new CmsPage();
-        $page->setContent($dto->content);
-        $page->setTitle($dto->title);
-        $page->setSlug($dto->slug);
-        $page->setIsActive($dto->isActive);
-        $page->setTranslatableLocale($dto->locale ?? 'en');
+
+        $page->updateFromDto($dto);
 
         $em->persist($page);
         $em->flush();
@@ -111,7 +117,7 @@ final class PagesController extends AbstractController
         }
 
         $em->flush();
-     
+
         return $this->createDataResponse($page);
     }
 

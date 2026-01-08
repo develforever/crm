@@ -40,6 +40,7 @@ const List = () => {
         <table className="table">
             <thead>
                 <tr>
+                    <th>#</th>
                     <th>ID</th>
                     <th>Slug</th>
                     <th>Title</th>
@@ -48,8 +49,9 @@ const List = () => {
             </thead>
             <tbody>
 
-                {data?.map((page: CmsPage) => {
+                {data?.map((page: CmsPage, i:number) => {
                     return <tr key={page.id}>
+                        <td>{i+1}</td>
                         <td>{page.id}</td>
                         <td>{page.slug}</td>
                         <td>{page.title}</td>

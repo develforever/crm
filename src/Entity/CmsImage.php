@@ -2,12 +2,15 @@
 
 namespace App\Entity;
 
+use App\Entity\Trait\UpdateFromDtoTrait;
 use App\Repository\CmsImageRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CmsImageRepository::class)]
 class CmsImage extends CmsContent
 {
+    use UpdateFromDtoTrait;
+    
     #[ORM\Column(length: 255)]
     private ?string $path = null;
 

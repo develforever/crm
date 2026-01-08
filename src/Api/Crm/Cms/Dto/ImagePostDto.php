@@ -4,7 +4,7 @@ namespace App\Api\Crm\Cms\Dto;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ImagePostDto
+class ImagePostDto implements IDto
 {
      #[Assert\Type('string')]
     public string $path;

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Trait\UpdateFromDtoTrait;
 use App\Repository\CmsPageRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,6 +16,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 class CmsPage implements Translatable
 {
+    use UpdateFromDtoTrait;
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -49,7 +52,7 @@ class CmsPage implements Translatable
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Gedmo\Translatable]
-    #[Groups(['cms_view'])]
+    #[Groups(['cms_read', 'cms_view'])]
     private ?string $content = null;
 
     #[ORM\Column]

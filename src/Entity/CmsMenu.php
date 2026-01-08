@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Trait\UpdateFromDtoTrait;
 use App\Repository\CmsMenuRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,6 +12,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ORM\Entity(repositoryClass: CmsMenuRepository::class)]
 class CmsMenu
 {
+    use UpdateFromDtoTrait;
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

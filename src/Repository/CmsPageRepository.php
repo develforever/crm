@@ -22,6 +22,26 @@ class CmsPageRepository extends ServiceEntityRepository
         return $this->findOneBy(['slug' => $slug, 'isActive' => true]);
     }
 
+    public function findPaginated(int $page, int $limit): array
+    {
+        $offset = ($page - 1) * $limit;
+
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.id', 'DESC')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function countAll(): int
+    {
+        return (int) $this->createQueryBuilder('p')
+            ->select('COUNT(p.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     //    /**
     //     * @return CmsPage[] Returns an array of CmsPage objects
     //     */

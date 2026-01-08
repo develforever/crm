@@ -4,9 +4,9 @@
 namespace App\Controller\Crm\Api;
 
 use App\Api\Crm\Data;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as BaaseController;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as BaseController;
 
-abstract class AbstractController extends BaaseController
+abstract class AbstractController extends BaseController
 {
 
 

@@ -2,11 +2,14 @@
 
 namespace App\Controller\Crm\Api\Cms;
 
+use App\Api\Crm\Cms\Dto\MenuPostDto;
 use App\Api\Crm\Data;
+use App\Controller\Crm\Api\AbstractController;
 use App\Entity\CmsMenu;
 use App\Repository\CmsMenuRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/crm/api/cms')]
@@ -20,10 +23,23 @@ final class MenusController extends AbstractController
     #[Route('/menus', name: 'app_crm_api_cms_menus', methods: 'GET')]
     public function index(): JsonResponse
     {
-        $data = new Data();
 
-        $data->data = $this->menuRepo->findAll();
+        return $this->createDataResponse( $this->menuRepo->findAll());
+    }
 
-        return $this->json($data, 200, [], ['groups' => 'cms_read']);
+    #[Route('/menus', name: 'app_crm_api_cms_menus_post', methods: 'POST')]
+    public function post(
+        #[MapRequestPayload()] MenuPostDto $dto,
+        EntityManagerInterface $em,
+    ): JsonResponse {
+
+        $menu = new CmsMenu();
+        $menu->setName($dto->name);
+        $menu->setTitle($dto->title);
+
+        $em->persist($menu);
+        $em->flush();
+
+        return $this->createDataResponse($menu);
     }
 }

@@ -10,11 +10,16 @@ abstract class AbstractController extends BaseController
 {
 
 
-    protected function createDataResponse($data, int $status = 200, array $ctx = ['groups' => 'cms_read'], array $headers = [])
+    protected function createDataResponse(array $data, int $status = 200, array $ctx = ['groups' => 'cms_read'], array $headers = [])
     {
 
         $output = new Data();
-        $output->data = $data;
+        foreach ($data as $key => $value) {
+            $output->$key = $value;
+        }
+
         return $this->json($output, $status, $headers, $ctx);
     }
+
+    
 }

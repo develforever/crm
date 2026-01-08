@@ -23,7 +23,7 @@ final class HtmlsController extends AbstractController
     public function index(): JsonResponse
     {
 
-        return $this->createDataResponse($this->htmlRepo->findAll());
+        return $this->createDataResponse(['data' => $this->htmlRepo->findAll()]);
     }
 
     #[Route('/htmls', name: 'app_crm_api_cms_htmls_post', methods: 'POST')]
@@ -38,6 +38,6 @@ final class HtmlsController extends AbstractController
         $em->flush();
 
 
-        return $this->createDataResponse($html);
+        return $this->createDataResponse(['data' => $html]);
     }
 }

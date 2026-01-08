@@ -23,8 +23,8 @@ final class TextsController extends AbstractController
     #[Route('/texts', name: 'app_crm_api_cms_texts', methods: 'GET')]
     public function index(): JsonResponse
     {
-        
-        return $this->createDataResponse($this->textRepo->findAll());
+
+        return $this->createDataResponse(['data' => $this->textRepo->findAll()]);
     }
 
     #[Route('/texts', name: 'app_crm_api_cms_texts_post', methods: 'POST')]
@@ -38,6 +38,6 @@ final class TextsController extends AbstractController
         $em->persist($text);
         $em->flush();
 
-        return $this->createDataResponse($text);
+        return $this->createDataResponse(['data' => $text]);
     }
 }

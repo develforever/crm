@@ -3,25 +3,25 @@
 namespace App\Api\Crm;
 
 use JsonSerializable;
+use RuntimeException;
 
 class Data implements IData, JsonSerializable
 {
 
-    private $_data = [
-        'error' => null,
-        'data' => null,
-        'meta' => null,
-        'message' => null,
-    ];
 
-    public function __set(string $name, $value)
-    {
-        $this->_data[$name] = $value;
-    }
+    public $error = null;
+    public $data = null;
+    public $meta = null;
+    public $message = null;
 
     public function getData()
     {
-        return $this->_data;
+        return [
+            'error' => $this->error,
+            'data' => $this->data,
+            'meta' => $this->meta,
+            'message' => $this->message,
+        ];
     }
 
     public function __toString()

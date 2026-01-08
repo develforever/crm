@@ -2,14 +2,26 @@
 
 namespace App\Entity\Trait;
 
-use App\Api\Crm\Cms\Dto\IDto;
+use App\Api\IDto;
 
-trait UpdateFromDtoTrait {
+trait UpdateFromDtoTrait
+{
 
-    public function updateFromDto(IDto $dto) {
 
-        foreach(get_class_vars(self::class) as $key => $value){
-            $this->$key = isset($dto->$key) ?  $dto->$key : $value;
+    public function updateFromDto(IDto $dto): void
+    {
+        
+        foreach (get_object_vars($dto) as $property => $value) {
+            
+            if ($value !== null) {
+                $setter = 'set' . ucfirst($property);
+                if (method_exists($this, $setter)) {
+                    $this->$setter($value);
+                } elseif (property_exists($this, $property)) {
+                    $this->{$property} = $value;
+                }
+            }
         }
     }
+
 }

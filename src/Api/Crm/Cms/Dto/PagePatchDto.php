@@ -2,22 +2,23 @@
 
 namespace App\Api\Crm\Cms\Dto;
 
+use App\Api\IDto;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class PagePatchDto implements IDto
 {
     #[Assert\Type('string')]
-    public string $content;
+    public ?string $content;
 
     #[Assert\Type('string')]
-    public string $title;
+    public ?string $title;
 
     #[Assert\Type('string')]
-    public string $slug;
+    public ?string $slug;
 
     #[Assert\Type('bool')]
-    public bool $isActive;
+    public ?bool $isActive;
 
     #[Assert\Type('string')]
-    public string $locale;
+    public ?string $locale;
 }

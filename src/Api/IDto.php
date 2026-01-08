@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Api\Crm\Cms\Dto;
+namespace App\Api;
 
 interface IDto {
     

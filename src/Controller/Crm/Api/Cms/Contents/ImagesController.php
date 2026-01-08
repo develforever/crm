@@ -22,8 +22,8 @@ final class ImagesController extends AbstractController
     #[Route('/images', name: 'app_crm_api_cms_images', methods: 'GET')]
     public function index(): JsonResponse
     {
-        
-        return $this->createDataResponse($this->imageRepo->findAll());
+
+        return $this->createDataResponse(['data' => $this->imageRepo->findAll()]);
     }
 
     #[Route('/texts', name: 'app_crm_api_cms_images_post', methods: 'POST')]
@@ -38,6 +38,6 @@ final class ImagesController extends AbstractController
         $em->persist($image);
         $em->flush();
 
-        return $this->createDataResponse($image);
+        return $this->createDataResponse(['data' => $image]);
     }
 }

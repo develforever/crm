@@ -24,7 +24,7 @@ final class MenusController extends AbstractController
     public function index(): JsonResponse
     {
 
-        return $this->createDataResponse( $this->menuRepo->findAll());
+        return $this->createDataResponse(['data' => $this->menuRepo->findAll()]);
     }
 
     #[Route('/menus', name: 'app_crm_api_cms_menus_post', methods: 'POST')]
@@ -40,6 +40,6 @@ final class MenusController extends AbstractController
         $em->persist($menu);
         $em->flush();
 
-        return $this->createDataResponse($menu);
+        return $this->createDataResponse(['data' => $menu]);
     }
 }

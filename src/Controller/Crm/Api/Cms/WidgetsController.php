@@ -23,7 +23,7 @@ final class WidgetsController extends AbstractController
     public function index(): JsonResponse
     {
 
-        return $this->createDataResponse($this->widgetRepo->findAll());
+        return $this->createDataResponse(['data' => $this->widgetRepo->findAll()]);
     }
 
     #[Route('/widgets', name: 'app_crm_api_cms_widgets_post', methods: 'POST')]
@@ -38,6 +38,6 @@ final class WidgetsController extends AbstractController
         $em->persist($widget);
         $em->flush();
 
-        return $this->createDataResponse($widget);
+        return $this->createDataResponse(['data' => $widget]);
     }
 }

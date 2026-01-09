@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\CmsWidgetItemRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 
 #[ORM\Entity(repositoryClass: CmsWidgetItemRepository::class)]
 class CmsWidgetItem
@@ -11,19 +13,23 @@ class CmsWidgetItem
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['cms_read', 'cms_view'])]
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups(['cms_read', 'cms_view'])]
     private ?int $position = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['cms_read', 'cms_view'])]
     private ?string $type = null;
 
     #[ORM\ManyToOne(inversedBy: 'cmsWidgetItems')]
     private ?CmsWidget $widget = null;
 
-    #[ORM\ManyToOne(targetEntity: CmsContent::class)]
+    #[ORM\ManyToOne(targetEntity: CmsContent::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['cms_read', 'cms_view'])]
     private ?CmsContent $content = null;
 
     public function getId(): ?int
@@ -67,12 +73,12 @@ class CmsWidgetItem
         return $this;
     }
 
-    public function getCmsContent(): CmsContent
+    public function getContent(): CmsContent
     {
         return $this->content;
     }
 
-    public function setCmsContent(CmsContent $content)
+    public function setContent(CmsContent $content)
     {
         $this->content = $content;
         return $this;

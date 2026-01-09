@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import { ViewWidget } from "./Widget/View";
 import { CreateWidget } from "./Widget/Create";
 import { ListWidget } from "./Widget/List";
+import { EditWidget } from "./Widget/Edit";
 
 
 const CmsWidgets = () => {
@@ -12,7 +13,8 @@ const CmsWidgets = () => {
         <Routes>
             <Route index element={<ListWidget />} />
             <Route path="/create" element={<CreateWidget />} />
-            <Route path="/:id" element={<ViewWidget />} />
+            <Route path="/:id/edit" element={<EditWidget />} />
+            <Route path="/:id"  element={<ViewWidget />} />
         </Routes>
     </div>)
 };

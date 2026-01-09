@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Trait\UpdateFromDtoTrait;
 use App\Repository\CmsWidgetRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,6 +12,9 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ORM\Entity(repositoryClass: CmsWidgetRepository::class)]
 class CmsWidget
 {
+
+    use UpdateFromDtoTrait;
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -28,7 +32,7 @@ class CmsWidget
     /**
      * @var Collection<int, CmsWidgetItem>
      */
-    #[ORM\OneToMany(targetEntity: CmsWidgetItem::class, mappedBy: 'widget')]
+    #[ORM\OneToMany(targetEntity: CmsWidgetItem::class, mappedBy: 'widget', cascade: ['persist'])]
     #[Groups(['cms_view'])]
     private Collection $cmsWidgetItems;
 

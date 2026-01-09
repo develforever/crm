@@ -5,11 +5,14 @@ namespace App\Twig;
 use App\Entity\CmsHtml;
 use App\Entity\CmsImage;
 use App\Entity\CmsText;
+use App\Entity\CmsWidget;
 use App\Entity\CmsWidgetItem;
 use App\Repository\CmsImageRepository;
 use App\Repository\CmsMenuRepository;
 use App\Repository\CmsPageRepository;
 use App\Repository\CmsWidgetRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -22,6 +25,7 @@ class CmsExtension extends AbstractExtension
         private CmsImageRepository $imageRepository,
         private CmsPageRepository $pageRepository,
         private Environment $twig,
+        private EntityManagerInterface $em,
     ) {}
 
     public function getFunctions(): array
@@ -60,13 +64,13 @@ class CmsExtension extends AbstractExtension
         return sprintf('<img src="%s" alt="%s">', $image->getPath(), $image->getAlt());
     }
 
-    public function getPageLink(int $pageId, string $label = null): string
+    public function getPageLink(int $pageId, ?string $label): string
     {
         $out = '';
 
         $page = $this->pageRepository->findOneBy(['id' => $pageId]);
         if ($page) {
-            $out =  $this->parseDynamicContent('<a href="{{ path(\'cms_page\', {\'slug\': \''.$page->getSlug().'\'}) }}" >' . ($label ?? $page->getTitle()) . '</a>');
+            $out =  $this->parseDynamicContent('<a href="{{ path(\'cms_page\', {\'slug\': \'' . $page->getSlug() . '\'}) }}" >' . ($label ?? $page->getTitle()) . '</a>');
         }
 
         return $out;
@@ -84,16 +88,30 @@ class CmsExtension extends AbstractExtension
     public function renderWidget(string $name): string
     {
         $widget = $this->widgetRepository->findOneBy(['name' => $name]);
-        if (!$widget) return $this->parseDynamicContent('{{\'define_widget\'|trans}} \'' . $name . '\'');
+        if (!$widget) {
+            $widget = new CmsWidget();
+            $widget->setName($name);
+            $widget->setTitle('Auto: change this');
+            $this->em->persist($widget);
+            $this->em->flush();
 
-        $output = '';
-        foreach ($widget->getCmsWidgetItems() as $item) {
-
-            $content = $this->resolveContent($item);
-
-            $output .= $this->parseDynamicContent($content);
+            return $this->parseDynamicContent('{{\'define_widget\'|trans}} \'' . $name . '\'');
         }
 
+        $output = '<div>
+        <h4>' . $widget->getTitle() . '</h4>';
+        $items = $widget->getCmsWidgetItems();
+
+        if ($items && count($items) > 0) {
+
+            foreach ($items as $item) {
+                $content = $this->resolveContent($item);
+                $output .= $this->parseDynamicContent($content);
+            }
+        } else {
+            $output .= $this->parseDynamicContent('{{ \'no_items\' | trans([], \'cms\')}}');
+        }
+        $output .= '</div>';
         return $output;
     }
 
@@ -106,7 +124,7 @@ class CmsExtension extends AbstractExtension
     private function resolveContent(CmsWidgetItem $item)
     {
         $output = '';
-        $content = $item->getCmsContent();
+        $content = $item->getContent();
 
         if ($content instanceof CmsHtml) {
             $output .= $content->getContent();

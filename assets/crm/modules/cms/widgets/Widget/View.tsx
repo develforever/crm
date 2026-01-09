@@ -88,7 +88,7 @@ const ViewWidget = () => {
 
                     {addItemForm.type == 'text' && <div>
                         <label className="form__label">Plain text</label>
-                        <input type="text" className="form__input" onChange={handlePlaintext} value={`${addItemForm.plainText || ''}`} />
+                        <input type="text" className="form__input" required onChange={handlePlaintext} value={`${addItemForm.plainText || ''}`} />
                     </div>}
 
                     <Button type="button" onClick={addItem} >Zapisz</Button>

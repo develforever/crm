@@ -24,6 +24,12 @@ export interface CmsWidgetApi {
     title: string;
 }
 
+export interface CmsWidgetMetaApi {
+    items: {
+        types: string[];
+    }
+}
+
 interface CmsWidgetItemContentTextApi {
     id: number;
     plainText: string;
@@ -31,7 +37,7 @@ interface CmsWidgetItemContentTextApi {
 
 interface CmsWidgetItemContentHtmlApi {
     id: number;
-    contnet: string;
+    content: string;
 }
 
 interface CmsWidgetItemContentImageApi {

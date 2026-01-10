@@ -9,7 +9,7 @@ interface ButtonProps {
   label?: string,
   to?: string;
   href?: string;
-  variant?: 'primary' | 'secondary'| 'danger';
+  variant?: 'primary' | 'secondary' | 'danger';
   size?: 'small' | 'medium' | 'large';
   onClick?: () => void;
   children?: React.ReactNode;
@@ -45,7 +45,7 @@ const Button = ({
 }
 
 interface ButtonGroupProps extends ButtonProps {
-  
+
 }
 const ButtonGroup = ({
   children,
@@ -67,3 +67,37 @@ const ButtonGroup = ({
 export { ButtonGroup };
 
 export { Button };
+
+
+const EditableDiv = ({
+  content,
+  onChange,
+  ...props
+}: {
+  content: string;
+  onChange: (newContent: string) => void;
+} & React.HTMLAttributes<HTMLDivElement>) => {
+  const handleBlur = (e: React.FocusEvent<HTMLDivElement>) => {
+    onChange(e.currentTarget.innerText);
+  };
+
+  return (
+    <div
+      title='Double click for editing'
+      onDoubleClick={(e) => {
+        e.currentTarget.contentEditable = "true";
+        e.currentTarget.focus();
+      }}
+      suppressContentEditableWarning
+      onBlur={(e) => {
+        e.currentTarget.contentEditable = "false";
+        handleBlur(e);
+      }}
+      {...props}
+    >
+      {content}
+    </div>
+  );
+};
+
+export { EditableDiv };

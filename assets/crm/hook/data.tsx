@@ -2,11 +2,11 @@
 import { z } from 'zod';
 import { useState, useEffect } from 'react';
 
-interface ApiResponse<T = any> {
-    data?: T | null;
+interface ApiResponse<D = any, M = any> {
+    data?: D | null;
     error?: string | null;
     message?: string;
-    meta?: unknown;
+    meta?: M | null;
     [key: string]: unknown;
 }
 
@@ -38,12 +38,14 @@ async function fetchJson<T>(
     return json as ApiResponse<T>;
 }
 
-export const useApiService = <T = any>(url?: string, options?: RequestInit) => {
-    const [data, setData] = useState<T | null>(null);
+export const useApiService = <D = any, M = any>(url?: string, options?: RequestInit) => {
+    const [data, setData] = useState<D | null>(null);
+    const [meta, setMeta] = useState<M | null>(null);
+    const [message, setMessage] = useState<string | null>(null);
     const [loading, setLoading] = useState(!!url);
     const [error, setError] = useState<string | null>(null);
 
-    const fetchData = async (url?: string, options?: RequestInit): Promise<ApiResponse<T>> => {
+    const fetchData = async (url?: string, options?: RequestInit): Promise<ApiResponse<D, M>> => {
         
         if (!url) return { data: null, error: 'No URL provided' };
 
@@ -61,13 +63,15 @@ export const useApiService = <T = any>(url?: string, options?: RequestInit) => {
         };
 
         try {
-            const result = await fetchJson<T>(`/crm/api${url}`, options);
+            const result = await fetchJson<D>(`/crm/api${url}`, options);
             setData(result.data ?? null);
             setError(result.error ?? null);
+            setMeta(result.meta ?? null);
+            setMessage(result.message ?? null);
             return result;
         } catch (err: any) {
             setError(err?.message ?? String(err));
-            return { data: null, error: err?.message ?? String(err) } as ApiResponse<T>;
+            return { data: null, error: err?.message ?? String(err) } as ApiResponse<D, M>;
         } finally {
             setLoading(false);
         }
@@ -80,6 +84,12 @@ export const useApiService = <T = any>(url?: string, options?: RequestInit) => {
     }, [url]);
 
     return {
-        data, loading, error, refetch: (newUrl?: string, options?: RequestInit) => fetchData(newUrl ?? url, options)
+        data, 
+        setData,
+        message,
+        meta,
+        loading, 
+        error, 
+        refetch: (newUrl?: string, options?: RequestInit) => fetchData(newUrl ?? url, options)
     };
 };

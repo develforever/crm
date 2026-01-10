@@ -10,6 +10,11 @@ use Symfony\Component\Serializer\Attribute\SerializedName;
 #[ORM\Entity(repositoryClass: CmsWidgetItemRepository::class)]
 class CmsWidgetItem
 {
+
+    public const TYPE_TEXT = 'text';
+    public const TYPE_IMAGE = 'image';
+    public const TYPE_HTML = 'html';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
